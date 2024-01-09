@@ -38,7 +38,7 @@ export default function Home() {
 
     const timeout = setTimeout(() => {
       setKeywordsList([...keywordsSplitWithRegex(keywords)]);
-    }, 400);
+    }, 250);
 
     return () => {
       clearTimeout(timeout);
@@ -93,130 +93,128 @@ export default function Home() {
   };
 
   return (
-    <main>
-      <div className="mx-auto flex h-screen max-w-7xl flex-col items-center justify-center tracking-wide">
-        <div className={"flex flex-col justify-center md:scale-[115%]"}>
-          <div className={"flex flex-col items-end sm:flex-row"}>
-            <form
-              onSubmit={onSubmit}
-              className={"flex max-w-md flex-col gap-4 p-4"}
-            >
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="file">Your File.</Label>
-                <Input
-                  id="file"
-                  type="file"
-                  name="file"
-                  onChange={(e) => setFile(e.target.files?.[0])}
+    <main className={"mx-auto h-screen w-full max-w-xl"}>
+      <div
+        className={
+          "flex h-full max-w-[480px] flex-col justify-center px-4 sm:scale-[115%] sm:px-2"
+        }
+      >
+        <form onSubmit={onSubmit} className={"flex w-full flex-col gap-4"}>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="file">Your File.</Label>
+            <Input
+              id="file"
+              type="file"
+              name="file"
+              onChange={(e) => setFile(e.target.files?.[0])}
+            />
+          </div>
+          <div className="grid w-full items-center gap-1.5">
+            <Label htmlFor="keywords">Enter your filter sentences.</Label>
+            <Input
+              type="text"
+              id="keywords"
+              placeholder="complete, true etc.."
+              onChange={(e) => setKeywords(e.target?.value)}
+            />
+          </div>
+          <KeywordsList list={keywordsList} />
+          <div className="grid w-full max-w-sm items-center gap-2.5">
+            <Label htmlFor="file">New File Name.</Label>
+            <RadioGroup defaultValue={nameOption}>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value="default"
+                  id="r1"
+                  onClick={() => setNameOption("default")}
                 />
+                <Label htmlFor="r1">Default</Label>
               </div>
-              <div className="grid w-full max-w-sm items-center gap-1.5">
-                <Label htmlFor="keywords">Enter your filter sentences.</Label>
-                <Input
-                  type="text"
-                  id="keywords"
-                  placeholder="complete, true etc.."
-                  onChange={(e) => setKeywords(e.target?.value)}
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem
+                  value="custom"
+                  id="r2"
+                  onClick={() => setNameOption("custom")}
                 />
+                <Label htmlFor="r2">Custom</Label>
               </div>
-              {keywordsList.length ? (
-                <div className={"flex flex-wrap gap-2"}>
-                  {keywordsList.map((key) => (
-                    <Badge className={"py-1.5"} key={nanoid()}>
-                      {key}
-                    </Badge>
-                  ))}
-                </div>
-              ) : null}
-              <div className="grid w-full max-w-sm items-center gap-2.5">
-                <Label htmlFor="file">New File Name.</Label>
-                <RadioGroup defaultValue={nameOption}>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="default"
-                      id="r1"
-                      onClick={() => setNameOption("default")}
-                    />
-                    <Label htmlFor="r1">Default</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <RadioGroupItem
-                      value="custom"
-                      id="r2"
-                      onClick={() => setNameOption("custom")}
-                    />
-                    <Label htmlFor="r2">Custom</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-
-              {nameOption === "custom" && (
-                <div className="grid w-full max-w-sm items-center gap-1.5">
-                  <Label htmlFor="customName">Enter your file name.</Label>
-                  <Input
-                    type="text"
-                    id="customName"
-                    placeholder="my-file-name etc.."
-                    onChange={(e) => setCustomName(e.target?.value)}
-                  />
-                </div>
-              )}
-
-              <Button type={"submit"} disabled={status === "loading"}>
-                Filter File By Keyword.
-              </Button>
-            </form>
-            <div>
-              <Button
-                asChild={true}
-                className={`mx-4 mt-2 ${
-                  status !== "success" &&
-                  "cursor-no-drop bg-zinc-700 opacity-75"
-                }`}
-              >
-                <a
-                  className={"my-4 cursor-pointer"}
-                  href={downloadUrl}
-                  target={"_blank"}
-                >
-                  Download File.
-                </a>
-              </Button>
-            </div>
+            </RadioGroup>
           </div>
 
-          {status === "loading" && (
-            <p className="mx-4 rounded border border-amber-950/10 bg-amber-50 px-2 py-1 text-sm text-amber-500 shadow shadow-amber-950/10">
-              In progres..
-            </p>
+          {nameOption === "custom" && (
+            <div className="grid w-full max-w-sm items-center gap-1.5">
+              <Label htmlFor="customName">Enter your file name.</Label>
+              <Input
+                type="text"
+                id="customName"
+                placeholder="my-file-name etc.."
+                onChange={(e) => setCustomName(e.target?.value)}
+              />
+            </div>
           )}
 
-          {status === "error" && (
-            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-              Please complete the form.
-            </p>
-          )}
+          <Button type={"submit"} disabled={status === "loading"}>
+            Filter File By Keyword.
+          </Button>
+        </form>
+        <Button
+          asChild={true}
+          className={`${
+            status !== "success" && "cursor-no-drop bg-zinc-700 opacity-75"
+          }`}
+        >
+          <a
+            className={"my-4 cursor-pointer"}
+            href={downloadUrl}
+            target={"_blank"}
+          >
+            Download File.
+          </a>
+        </Button>
 
-          {status === "no-return" && (
-            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-              The filtering based on the searched keyword could not be
-              performed.
-            </p>
-          )}
+        {status === "loading" && (
+          <p className="rounded border border-amber-950/10 bg-amber-50 px-2 py-1 text-sm text-amber-500 shadow shadow-amber-950/10">
+            In progres..
+          </p>
+        )}
 
-          {status === "max-file-size" && (
-            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-              Maximum File Size is 4.5 MB.
-            </p>
-          )}
+        {status === "error" && (
+          <p className="rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+            Please complete the form.
+          </p>
+        )}
 
-          {status === "success" && (
-            <p className="mx-4 rounded border border-lime-950/10 bg-lime-50 px-2 py-1 text-sm text-lime-500 shadow shadow-lime-950/10">
-              Your new file is ready to download.
-            </p>
-          )}
-        </div>
+        {status === "no-return" && (
+          <p className="rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+            The filtering based on the searched keyword could not be performed.
+          </p>
+        )}
+
+        {status === "max-file-size" && (
+          <p className="rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+            Maximum File Size is 4.5 MB.
+          </p>
+        )}
+
+        {status === "success" && (
+          <p className="rounded border border-lime-950/10 bg-lime-50 px-2 py-1 text-sm text-lime-500 shadow shadow-lime-950/10">
+            Your new file is ready to download.
+          </p>
+        )}
       </div>
     </main>
   );
 }
+
+type TProps = React.FC<{ list: string[] }>;
+const KeywordsList: TProps = ({ list }) => {
+  return list.length ? (
+    <div className={"flex max-w-[320px] flex-wrap gap-2"}>
+      {list.map((key) => (
+        <Badge className={"py-1.5"} key={nanoid()}>
+          {key}
+        </Badge>
+      ))}
+    </div>
+  ) : null;
+};
