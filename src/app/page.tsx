@@ -11,7 +11,7 @@ type TNameOption = "default" | "custom";
 
 export default function Home() {
   const [status, setStatus] = useState<TStatus>("initial");
-  const [fileName, setFileName] = useState<undefined | string>();
+  const [downloadUrl, setDownloadUrl] = useState<undefined | string>();
 
   const [keywords, setKeywords] = useState<undefined | string>();
   const [file, setFile] = useState<File>();
@@ -23,7 +23,7 @@ export default function Home() {
     e.preventDefault();
 
     setStatus("initial");
-    setFileName(undefined);
+    setDownloadUrl(undefined);
 
     if (!file || !keywords || (nameOption === "custom" && customName === "")) {
       setStatus("error");
@@ -47,7 +47,7 @@ export default function Home() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
       const json = await res.json();
-      setFileName(json.fileName);
+      setDownloadUrl(json.url);
       setStatus("success");
     } catch (e: any) {
       setStatus("error");
@@ -148,8 +148,8 @@ export default function Home() {
               >
                 <a
                   className={"my-4 cursor-pointer"}
-                  href={fileName}
-                  download={fileName}
+                  href={downloadUrl}
+                  target={"_blank"}
                 >
                   Download File.
                 </a>

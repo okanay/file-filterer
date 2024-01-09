@@ -1,5 +1,5 @@
-import fs from "fs";
 import { NextResponse } from "next/server";
+import { put } from "@vercel/blob";
 
 export async function POST(request: Request) {
   const data = await request.formData();
@@ -18,18 +18,23 @@ export async function POST(request: Request) {
   const value = buffer.toString("utf8").split("\n");
   const filter = value.filter((item) => item.includes(keywords));
   const join = filter.join("\n");
+  const fileName = createFileName(file.name, nameOption, customName);
 
-  const fileName = () => {
-    const type = file.name.split(".").at(-1);
-
-    if (nameOption === "custom") {
-      return `${customName}.${type}`;
-    }
-
-    return `filtered.${type}`;
-  };
-
-  fs.writeFileSync(`./public/${fileName()}`, join);
-
-  return NextResponse.json({ success: true, fileName: fileName() });
+  const { url } = await put(fileName, join, { access: "public" });
+  console.log(url);
+  return NextResponse.json({ success: true, url });
 }
+
+const createFileName = (
+  name: string,
+  nameOption: string,
+  customName: string
+) => {
+  const type = name.split(".").at(-1);
+
+  if (nameOption === "custom") {
+    return `${customName}.${type}`;
+  }
+
+  return `filtered.${type}`;
+};
