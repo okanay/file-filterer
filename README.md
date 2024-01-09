@@ -1,3 +1,11 @@
+## Node JS
+
+You can download Node JS using this link.
+
+```bash
+https://nodejs.org/dist/v20.10.0/node-v20.10.0.pkg
+```
+
 ## Getting Started
 
 First, install all the dependencies:
