@@ -79,7 +79,7 @@ export default function Home() {
           <div className={"flex flex-col items-end sm:flex-row"}>
             <form
               onSubmit={onSubmit}
-              className={"relative flex max-w-md flex-col gap-4 p-4"}
+              className={"flex max-w-md flex-col gap-4 p-4"}
             >
               <div className="grid w-full max-w-sm items-center gap-1.5">
                 <Label htmlFor="file">Your File.</Label>
@@ -99,7 +99,6 @@ export default function Home() {
                   onChange={(e) => setKeywords(e.target?.value)}
                 />
               </div>
-
               <div className="grid w-full max-w-sm items-center gap-2.5">
                 <Label htmlFor="file">New File Name.</Label>
                 <RadioGroup defaultValue={nameOption}>
@@ -137,42 +136,11 @@ export default function Home() {
               <Button type={"submit"} disabled={status === "loading"}>
                 Filter File By Keyword.
               </Button>
-
-              {status === "loading" && (
-                <p className="absolute bottom-0 translate-y-[80%] rounded border border-amber-950/10 bg-amber-50 px-2 py-1 text-sm text-amber-500 shadow shadow-amber-950/10">
-                  In progres..
-                </p>
-              )}
-
-              {status === "error" && (
-                <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-                  Please complete the form.
-                </p>
-              )}
-
-              {status === "no-return" && (
-                <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-                  The filtering based on the searched keyword could not be
-                  performed.
-                </p>
-              )}
-
-              {status === "max-file-size" && (
-                <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
-                  Maximum File Size is 4.5 MB.
-                </p>
-              )}
-
-              {status === "success" && (
-                <p className="absolute bottom-0 translate-y-[80%] rounded border border-lime-950/10 bg-lime-50 px-2 py-1 text-sm text-lime-500 shadow shadow-lime-950/10">
-                  Your file is ready to download.
-                </p>
-              )}
             </form>
             <div>
               <Button
                 asChild={true}
-                className={`${
+                className={`mx-4 mt-2 ${
                   status !== "success" &&
                   "cursor-no-drop bg-zinc-700 opacity-75"
                 }`}
@@ -187,6 +155,37 @@ export default function Home() {
               </Button>
             </div>
           </div>
+
+          {status === "loading" && (
+            <p className="mx-4 rounded border border-amber-950/10 bg-amber-50 px-2 py-1 text-sm text-amber-500 shadow shadow-amber-950/10">
+              In progres..
+            </p>
+          )}
+
+          {status === "error" && (
+            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+              Please complete the form.
+            </p>
+          )}
+
+          {status === "no-return" && (
+            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+              The filtering based on the searched keyword could not be
+              performed.
+            </p>
+          )}
+
+          {status === "max-file-size" && (
+            <p className="mx-4 rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+              Maximum File Size is 4.5 MB.
+            </p>
+          )}
+
+          {status === "success" && (
+            <p className="mx-4 rounded border border-lime-950/10 bg-lime-50 px-2 py-1 text-sm text-lime-500 shadow shadow-lime-950/10">
+              Your new file is ready to download.
+            </p>
+          )}
         </div>
       </div>
     </main>
