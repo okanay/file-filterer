@@ -154,7 +154,7 @@ export default function Home() {
           )}
 
           <Button type={"submit"} disabled={status === "loading"}>
-            Filter File By Keyword.
+            Filter File By Keywords.
           </Button>
         </form>
         <Button
