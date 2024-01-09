@@ -8,13 +8,13 @@ https://nodejs.org/dist/v20.10.0/node-v20.10.0.pkg
 
 ## Getting Started
 
-First, install all the dependencies:
+First, open a terminal in the project folder and install all the dependencies by executing the following command:
 
 ```bash
 npm install
 ```
 
-Then, run the development server:
+Then, initiate the development server by executing the following command:
 
 ```bash
 npm run dev
