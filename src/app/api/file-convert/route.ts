@@ -21,6 +21,10 @@ export async function POST(request: Request) {
     const join = filter.join("\n");
     const fileName = createFileName(file.name, nameOption, customName);
 
+    if (join.length === 0) {
+      return NextResponse.json({ success: false });
+    }
+
     const { url } = await put(fileName, join, { access: "public" });
     return NextResponse.json({ success: true, url });
   } catch (e) {

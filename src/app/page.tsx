@@ -6,7 +6,13 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-type TStatus = "initial" | "loading" | "success" | "error";
+type TStatus =
+  | "initial"
+  | "loading"
+  | "success"
+  | "error"
+  | "no-return"
+  | "max-file-size";
 type TNameOption = "default" | "custom";
 
 export default function Home() {
@@ -30,6 +36,13 @@ export default function Home() {
       return;
     }
 
+    const maxSizeInBytes = 4.4 * 1024 * 1024; // 4.4 MB'ın byte cinsinden karşılığı
+
+    if (file.size > maxSizeInBytes) {
+      setStatus("max-file-size");
+      return;
+    }
+
     try {
       setStatus("loading");
       const data = new FormData();
@@ -44,9 +57,14 @@ export default function Home() {
       });
 
       if (!res.ok) throw new Error(await res.text());
+      const json = await res.json();
+      if (!json.success) {
+        setStatus("no-return");
+        return;
+      }
+
       await new Promise((resolve) => setTimeout(resolve, 1000));
 
-      const json = await res.json();
       setDownloadUrl(json.url);
       setStatus("success");
     } catch (e: any) {
@@ -58,7 +76,7 @@ export default function Home() {
     <main>
       <div className="mx-auto flex h-screen max-w-7xl flex-col items-center justify-center tracking-wide">
         <div className={"flex flex-col justify-center md:scale-[115%]"}>
-          <div className={"flex items-end"}>
+          <div className={"flex flex-col items-end sm:flex-row"}>
             <form
               onSubmit={onSubmit}
               className={"relative flex max-w-md flex-col gap-4 p-4"}
@@ -129,6 +147,19 @@ export default function Home() {
               {status === "error" && (
                 <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
                   Please complete the form.
+                </p>
+              )}
+
+              {status === "no-return" && (
+                <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+                  The filtering based on the searched keyword could not be
+                  performed.
+                </p>
+              )}
+
+              {status === "max-file-size" && (
+                <p className="absolute bottom-0 translate-y-[80%] rounded border border-rose-950/10 bg-rose-50 px-2 py-1 text-sm text-rose-500 shadow shadow-rose-950/10">
+                  Maximum File Size is 4.5 MB.
                 </p>
               )}
 
