@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
+import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
 
 export async function POST(request: Request) {
   try {
@@ -17,15 +18,24 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(bytes);
 
     const value = buffer.toString("utf8").split("\n");
-    const filter = value.filter((item) => item.includes(keywords));
-    const join = filter.join("\n");
-    const fileName = createFileName(file.name, nameOption, customName);
 
-    if (join.length === 0) {
+    const filter = value.filter((item) => {
+      for (const keyToCheck of keywordsSplitWithRegex(keywords)) {
+        if (item.includes(keyToCheck)) return true;
+      }
+    });
+
+    console.log(filter);
+
+    const filteredFile = filter.join("\n");
+
+    if (filteredFile.length === 0) {
       return NextResponse.json({ success: false });
     }
 
-    const { url } = await put(fileName, join, { access: "public" });
+    const fileName = createFileName(file.name, nameOption, customName);
+
+    const { url } = await put(fileName, filteredFile, { access: "public" });
     return NextResponse.json({ success: true, url });
   } catch (e) {
     console.log(e);

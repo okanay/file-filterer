@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Badge } from "@/components/ui/badge";
+import { nanoid } from "nanoid";
 
 type TStatus =
   | "initial"
@@ -24,6 +27,23 @@ export default function Home() {
 
   const [nameOption, setNameOption] = useState<TNameOption>("default");
   const [customName, setCustomName] = useState<string>("");
+
+  const [keywordsList, setKeywordsList] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (!keywords?.length) {
+      setKeywordsList([]);
+      return;
+    }
+
+    const timeout = setTimeout(() => {
+      setKeywordsList([...keywordsSplitWithRegex(keywords)]);
+    }, 400);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [keywords]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,6 +119,15 @@ export default function Home() {
                   onChange={(e) => setKeywords(e.target?.value)}
                 />
               </div>
+              {keywordsList.length ? (
+                <div className={"flex flex-wrap gap-2"}>
+                  {keywordsList.map((key) => (
+                    <Badge className={"py-1.5"} key={nanoid()}>
+                      {key}
+                    </Badge>
+                  ))}
+                </div>
+              ) : null}
               <div className="grid w-full max-w-sm items-center gap-2.5">
                 <Label htmlFor="file">New File Name.</Label>
                 <RadioGroup defaultValue={nameOption}>
