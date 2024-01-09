@@ -25,3 +25,8 @@ Finally, open the project:
 ```bash
 http://localhost:3000/
 ```
+
+`.env` requirement `blob.`
+```bash
+BLOB_READ_WRITE_TOKEN=****
+```
