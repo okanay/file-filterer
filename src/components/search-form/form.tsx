@@ -2,51 +2,32 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
-import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { useState } from "react";
 import { useAtom, useAtomValue, useSetAtom } from "jotai";
 import { CustomNameInput } from "@/components/search-form/custom-name-input";
 import { InputGroup } from "@/components/search-form/input-group";
-import { KeywordsList } from "@/components/search-form/keywords-list";
+import { DownloadButton } from "@/components/search-form/download-button";
+import { StatusMessages } from "@/components/search-form/status-message";
+import { KeywordInput } from "@/components/search-form/keyword-input";
 
 import {
   customNameAtom,
   downloadUrlAtom,
   keywordAtom,
-  keywordsListAtom,
   nameOptionAtom,
   statusAtom,
 } from "@/atoms/form-atoms";
-import { DownloadButton } from "@/components/search-form/download-button";
-import { StatusMessages } from "@/components/search-form/status-message";
+
+// 4.4 MB
+const MAX_BYTE = 4.4 * 1024 * 1024;
 
 export const Form = () => {
-  //
-  //
   const [status, setStatus] = useAtom(statusAtom);
-
   const [file, setFile] = useState<File>();
-  const [keywords, setKeywords] = useAtom(keywordAtom);
   const [nameOption, setNameOption] = useAtom(nameOptionAtom);
-
+  const keywords = useAtomValue(keywordAtom);
   const customName = useAtomValue(customNameAtom);
-  const setKeywordsList = useSetAtom(keywordsListAtom);
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
-
-  useEffect(() => {
-    if (!keywords?.length) {
-      setKeywordsList([]);
-      return;
-    }
-
-    const timeout = setTimeout(() => {
-      setKeywordsList([...keywordsSplitWithRegex(keywords)]);
-    }, 250);
-
-    return () => {
-      clearTimeout(timeout);
-    };
-  }, [keywords]);
 
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -54,21 +35,40 @@ export const Form = () => {
     setStatus({ type: "initial" });
     setDownloadUrl(undefined);
 
-    if (!file || !keywords || (nameOption === "custom" && customName === "")) {
-      setStatus({ type: "error", message: "Please complete the form." });
+    if (!file) {
+      setStatus({
+        type: "error",
+        message: "Please add your file.",
+      });
       return;
     }
-
-    const maxSizeInBytes = 4.4 * 1024 * 1024; // 4.4 MB'ın byte cinsinden karşılığı
-
-    if (file.size > maxSizeInBytes) {
-      setStatus({ type: "error", message: "Maximum File Size is 4.5 MB." });
+    if (file.size > MAX_BYTE) {
+      setStatus({
+        type: "error",
+        message: "Maximum File Size is 4.4 MB.",
+      });
+      return;
+    }
+    if (!keywords) {
+      setStatus({
+        type: "error",
+        message: "Please add some keywords.",
+      });
+      return;
+    }
+    if (nameOption === "custom" && customName === "") {
+      setStatus({
+        type: "error",
+        message: "Please add your custom file name.",
+      });
       return;
     }
 
     try {
       setStatus({ type: "loading" });
+
       const data = new FormData();
+
       data.set("file", file);
       data.set("keywords", keywords);
       data.set("nameOption", nameOption);
@@ -80,7 +80,6 @@ export const Form = () => {
       });
 
       if (!res.ok) throw new Error(await res.text());
-
       const json = await res.json();
 
       if (!json.success) {
@@ -92,10 +91,10 @@ export const Form = () => {
         return;
       }
 
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
       setDownloadUrl(json.url);
       setStatus({ type: "success" });
+      //
+      //
     } catch (e: any) {
       setStatus({
         type: "error",
@@ -116,16 +115,7 @@ export const Form = () => {
             onChange={(e) => setFile(e.target.files?.[0])}
           />
         </InputGroup>
-        <InputGroup>
-          <Label htmlFor="keywords">Enter your filter sentences.</Label>
-          <Input
-            type="text"
-            id="keywords"
-            placeholder="complete, true etc.."
-            onChange={(e) => setKeywords(e.target?.value)}
-          />
-        </InputGroup>
-        <KeywordsList />
+        <KeywordInput />
         <InputGroup>
           <Label htmlFor="file">New File Name.</Label>
           <RadioGroup defaultValue={nameOption}>
