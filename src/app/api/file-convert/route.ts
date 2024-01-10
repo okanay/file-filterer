@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { createFileName } from "@/helpers/create-file-name";
 
 export async function POST(request: Request) {
   try {
@@ -16,7 +17,6 @@ export async function POST(request: Request) {
 
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
-
     const value = buffer.toString("utf8").split("\n");
 
     const filter = value.filter((item) => {
@@ -24,8 +24,6 @@ export async function POST(request: Request) {
         if (item.includes(keyToCheck)) return true;
       }
     });
-
-    console.log(filter);
 
     const filteredFile = filter.join("\n");
 
@@ -38,21 +36,6 @@ export async function POST(request: Request) {
     const { url } = await put(fileName, filteredFile, { access: "public" });
     return NextResponse.json({ success: true, url });
   } catch (e) {
-    console.log(e);
     return NextResponse.json({ success: false });
   }
 }
-
-const createFileName = (
-  name: string,
-  nameOption: string,
-  customName: string
-) => {
-  const type = name.split(".").at(-1);
-
-  if (nameOption === "custom") {
-    return `${customName}.${type}`;
-  }
-
-  return `filtered.${type}`;
-};
