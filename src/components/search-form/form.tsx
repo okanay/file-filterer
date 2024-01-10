@@ -1,18 +1,16 @@
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useAtom, useAtomValue, useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 import { CustomNameInput } from "@/components/search-form/custom-name-input";
-import { InputGroup } from "@/components/search-form/input-group";
 import { DownloadButton } from "@/components/search-form/download-button";
 import { StatusMessages } from "@/components/search-form/status-message";
 import { KeywordInput } from "@/components/search-form/keyword-input";
+import { CustomNameOption } from "@/components/search-form/custom-name-option";
+import { FileInput } from "@/components/search-form/file-input";
+import { SubmitButton } from "@/components/search-form/submit-button";
 
 import {
   customNameAtom,
   downloadUrlAtom,
+  fileAtom,
   keywordAtom,
   nameOptionAtom,
   statusAtom,
@@ -22,9 +20,9 @@ import {
 const MAX_BYTE = 4.4 * 1024 * 1024;
 
 export const Form = () => {
-  const [status, setStatus] = useAtom(statusAtom);
-  const [file, setFile] = useState<File>();
-  const [nameOption, setNameOption] = useAtom(nameOptionAtom);
+  const setStatus = useSetAtom(statusAtom);
+  const file = useAtomValue(fileAtom);
+  const nameOption = useAtomValue(nameOptionAtom);
   const keywords = useAtomValue(keywordAtom);
   const customName = useAtomValue(customNameAtom);
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
@@ -106,41 +104,11 @@ export const Form = () => {
   return (
     <div className="flex h-full max-w-[480px] flex-col justify-center px-4 sm:scale-[115%] sm:px-2">
       <form onSubmit={onSubmit} className={"flex w-full flex-col gap-4"}>
-        <InputGroup>
-          <Label htmlFor="file">Your File.</Label>
-          <Input
-            id="file"
-            type="file"
-            name="file"
-            onChange={(e) => setFile(e.target.files?.[0])}
-          />
-        </InputGroup>
+        <FileInput />
         <KeywordInput />
-        <InputGroup>
-          <Label htmlFor="file">New File Name.</Label>
-          <RadioGroup defaultValue={nameOption}>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                value="default"
-                id="r1"
-                onClick={() => setNameOption("default")}
-              />
-              <Label htmlFor="r1">Default</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem
-                value="custom"
-                id="r2"
-                onClick={() => setNameOption("custom")}
-              />
-              <Label htmlFor="r2">Custom</Label>
-            </div>
-          </RadioGroup>
-        </InputGroup>
+        <CustomNameOption />
         <CustomNameInput />
-        <Button type={"submit"} disabled={status.type === "loading"}>
-          Filter File By Keywords.
-        </Button>
+        <SubmitButton />
       </form>
       <DownloadButton />
       <StatusMessages />
