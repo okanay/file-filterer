@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
 import { useAtom, useSetAtom } from "jotai/index";
 import { MAX_BYTE } from "@/constants";
+import { formValidation } from "@/validations/form-validation";
 import {
   customNameAtom,
   downloadUrlAtom,
@@ -23,42 +24,27 @@ export const FormSubmit = () => {
     setStatus({ type: "initial" });
     setDownloadUrl(undefined);
 
-    if (!file) {
+    const isValid = formValidation.safeParse({
+      file,
+      keywords,
+      nameOption,
+      customName,
+    });
+
+    if (!isValid.success) {
       setStatus({
         type: "error",
-        message: "Please add your file.",
-      });
-      return;
-    }
-    if (file.size > MAX_BYTE) {
-      setStatus({
-        type: "error",
-        message: "Maximum File Size is 4.4 MB.",
-      });
-      return;
-    }
-    if (!keywords) {
-      setStatus({
-        type: "error",
-        message: "Please add some keywords.",
-      });
-      return;
-    }
-    if (nameOption === "custom" && customName === "") {
-      setStatus({
-        type: "error",
-        message: "Please add your custom file name.",
+        message: isValid.error.errors.at(0)?.message,
       });
       return;
     }
 
     try {
       setStatus({ type: "loading" });
-
       const data = new FormData();
 
-      data.set("file", file);
-      data.set("keywords", keywords);
+      data.set("file", file as File);
+      data.set("keywords", keywords as string);
       data.set("nameOption", nameOption);
       data.set("customName", customName as string);
 
@@ -81,8 +67,6 @@ export const FormSubmit = () => {
 
       setDownloadUrl(json.url);
       setStatus({ type: "success" });
-      //
-      //
     } catch (e: any) {
       setStatus({
         type: "error",
