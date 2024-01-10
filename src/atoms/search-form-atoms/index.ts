@@ -4,8 +4,12 @@ type TStatus = {
   type: "initial" | "error" | "loading" | "success";
   message?: string;
 };
-type TNameOption = "default" | "custom";
-type TLengthOption = "all" | "find-first" | "first-custom" | "last-custom";
+export type TNameOption = "default" | "custom";
+export type TLengthOption =
+  | "all"
+  | "find-first"
+  | "first-custom"
+  | "last-custom";
 
 export const fileAtom = atom<File | undefined>(undefined);
 export const statusAtom = atom<TStatus>({ type: "initial" });

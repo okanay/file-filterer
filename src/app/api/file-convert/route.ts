@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
 import { createFileName } from "@/helpers/create-file-name";
+import { TLengthOption } from "@/atoms/search-form-atoms";
 
 export async function POST(request: Request) {
   try {
@@ -12,8 +13,9 @@ export async function POST(request: Request) {
 
     const nameOption: string | null = data.get("nameOption") as string;
     const customName: string | null = data.get("customName") as string;
+    const fileName = createFileName(file.name, nameOption, customName);
 
-    const lengthOption: string | null = data.get("lengthOption") as string;
+    const lengthOption = data.get("lengthOption") as TLengthOption;
     const customLength: string | null = data.get("customLength") as string;
 
     if (!file && !keywords) {
@@ -24,21 +26,29 @@ export async function POST(request: Request) {
     const buffer = Buffer.from(bytes);
     const value = buffer.toString("utf8").split("\n");
 
-    const filter = value.filter((item) => {
+    let resultFile;
+
+    resultFile = value.filter((item) => {
       for (const keyToCheck of keywordsSplitWithRegex(keywords)) {
         if (item.includes(keyToCheck)) return true;
       }
     });
 
-    const filteredFile = filter.join("\n");
+    if (lengthOption === "find-first") {
+      resultFile = resultFile.slice(0, 1);
+    } else if (lengthOption === "first-custom") {
+      resultFile = resultFile.slice(0, Number(customLength));
+    } else if (lengthOption === "last-custom") {
+      resultFile = resultFile.slice(Number(customLength) * -1);
+    }
 
-    if (filteredFile.length === 0) {
+    resultFile = resultFile.join("\n");
+
+    if (resultFile.length === 0) {
       return NextResponse.json({ success: false });
     }
 
-    const fileName = createFileName(file.name, nameOption, customName);
-
-    const { url } = await put(fileName, filteredFile, { access: "public" });
+    const { url } = await put(fileName, resultFile, { access: "public" });
     return NextResponse.json({ success: true, url });
   } catch (e) {
     return NextResponse.json({ success: false });
