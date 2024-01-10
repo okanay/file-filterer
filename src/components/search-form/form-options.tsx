@@ -7,7 +7,7 @@ import { CustomCalendarOption } from "@/components/search-form/custom-calendar-o
 
 export const FormOptions = () => {
   return (
-    <div className="mx-auto flex w-fit flex-col gap-4 px-4">
+    <div className="mx-auto flex w-fit flex-col gap-6">
       <h1 className="text-lg font-semibold tracking-wide text-gray-800">
         Options.
       </h1>
@@ -15,7 +15,7 @@ export const FormOptions = () => {
         <div className={"flex flex-col flex-wrap gap-4"}>
           <CustomMaxLength />
         </div>
-        <div className={"flex flex-col flex-wrap gap-4"}>
+        <div className={"flex flex-col flex-wrap gap-6"}>
           <div className={"flex flex-col flex-wrap gap-4"}>
             <CustomNameOption />
           </div>
