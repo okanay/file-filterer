@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
 import { nameOptionAtom } from "../../atoms/search-form-atoms";
+import { CustomNameInput } from "@/components/search-form/custom-name-input";
 
 type TProps = React.FC<{}>;
 export const CustomNameOption: TProps = () => {
@@ -10,8 +11,8 @@ export const CustomNameOption: TProps = () => {
 
   return (
     <InputGroup>
-      <Label htmlFor="file">New File Name.</Label>
-      <RadioGroup defaultValue={nameOption}>
+      <Label htmlFor="name-option">Customize File Name.</Label>
+      <RadioGroup name={"name-option"} defaultValue={nameOption}>
         <div className="flex items-center space-x-2">
           <RadioGroupItem
             value="default"

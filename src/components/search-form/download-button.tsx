@@ -13,7 +13,7 @@ export const DownloadButton = () => {
         status.type !== "success" && "cursor-no-drop bg-zinc-700 opacity-75"
       }`}
     >
-      <a className={"my-4 cursor-pointer"} href={downloadUrl} target={"_blank"}>
+      <a className={"cursor-pointer"} href={downloadUrl} target={"_blank"}>
         Download File.
       </a>
     </Button>

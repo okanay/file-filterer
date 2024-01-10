@@ -15,16 +15,14 @@ export const fileSchema = z
     "Only these types are allowed .log, .txt."
   );
 
-export const keywordSchema = z
-  .string()
-  .min(1, { message: "Please add some keywords." });
-
 export const formValidation = z
   .object({
     file: fileSchema,
-    keywords: keywordSchema,
+    keywords: z.string().min(1, { message: "Please add some keywords." }),
     nameOption: z.string(),
     customName: z.string(),
+    lengthOption: z.string(),
+    customLength: z.number(),
   })
   .superRefine((data, ctx) => {
     if (data.nameOption === "custom") {
@@ -32,6 +30,17 @@ export const formValidation = z
         ctx.addIssue({
           code: "custom",
           message: "Please add your custom file name.",
+        });
+      }
+    }
+    if (
+      data.lengthOption === "first-custom" ||
+      data.lengthOption === "last-custom"
+    ) {
+      if (data.customLength <= 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Please set your custom line length.",
         });
       }
     }

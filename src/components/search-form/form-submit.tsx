@@ -4,20 +4,28 @@ import { useAtom, useSetAtom } from "jotai/index";
 import { MAX_BYTE } from "@/constants";
 import { formValidation } from "@/validations/form-validation";
 import {
+  customLengthAtom,
   customNameAtom,
   downloadUrlAtom,
   fileAtom,
   keywordAtom,
+  lengthOptionAtom,
   nameOptionAtom,
   statusAtom,
 } from "@/atoms/search-form-atoms";
 
 export const FormSubmit = () => {
   const [status, setStatus] = useAtom(statusAtom);
+
   const file = useAtomValue(fileAtom);
-  const nameOption = useAtomValue(nameOptionAtom);
   const keywords = useAtomValue(keywordAtom);
+
+  const nameOption = useAtomValue(nameOptionAtom);
   const customName = useAtomValue(customNameAtom);
+
+  const lengthOption = useAtomValue(lengthOptionAtom);
+  const customLength = useAtomValue(customLengthAtom);
+
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
   const handleFormSubmit = async () => {
@@ -26,6 +34,8 @@ export const FormSubmit = () => {
       keywords,
       nameOption,
       customName,
+      lengthOption,
+      customLength,
     });
     if (!validation.success) {
       setStatus({
@@ -44,6 +54,8 @@ export const FormSubmit = () => {
       data.set("keywords", keywords as string);
       data.set("nameOption", nameOption);
       data.set("customName", customName as string);
+      data.set("lengthOption", lengthOption);
+      data.set("customLength", String(customLength));
 
       const res = await fetch("/api/file-convert", {
         method: "POST",
