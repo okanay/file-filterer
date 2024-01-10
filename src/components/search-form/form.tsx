@@ -4,7 +4,7 @@ import { StatusMessages } from "@/components/search-form/status-message";
 import { KeywordInput } from "@/components/search-form/keyword-input";
 import { CustomNameOption } from "@/components/search-form/custom-name-option";
 import { FileInput } from "@/components/search-form/file-input";
-import { SubmitButton } from "@/components/search-form/submit-button";
+import { FormSubmit } from "@/components/search-form/form-submit";
 
 export const Form = () => {
   return (
@@ -14,7 +14,7 @@ export const Form = () => {
         <KeywordInput />
         <CustomNameOption />
         <CustomNameInput />
-        <SubmitButton />
+        <FormSubmit />
       </form>
       <DownloadButton />
       <StatusMessages />

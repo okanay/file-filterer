@@ -2,7 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useSetAtom } from "jotai/index";
-import { fileAtom } from "@/atoms/form-atoms";
+import { fileAtom } from "../../atoms/search-form-atoms";
 
 export const FileInput = () => {
   const setFile = useSetAtom(fileAtom);

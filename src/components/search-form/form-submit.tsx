@@ -1,4 +1,7 @@
+import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
+import { useAtom, useSetAtom } from "jotai/index";
+import { MAX_BYTE } from "@/constants";
 import {
   customNameAtom,
   downloadUrlAtom,
@@ -6,13 +9,9 @@ import {
   keywordAtom,
   nameOptionAtom,
   statusAtom,
-} from "@/atoms/form-atoms";
-import { Button } from "@/components/ui/button";
-import { useAtom, useSetAtom } from "jotai/index";
+} from "@/atoms/search-form-atoms";
 
-const MAX_BYTE = 4.4 * 1024 * 1024;
-
-export const SubmitButton = () => {
+export const FormSubmit = () => {
   const [status, setStatus] = useAtom(statusAtom);
   const file = useAtomValue(fileAtom);
   const nameOption = useAtomValue(nameOptionAtom);

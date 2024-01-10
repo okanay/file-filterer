@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { downloadUrlAtom, statusAtom } from "@/atoms/form-atoms";
+import { downloadUrlAtom, statusAtom } from "../../atoms/search-form-atoms";
 import { Button } from "@/components/ui/button";
 
 export const DownloadButton = () => {

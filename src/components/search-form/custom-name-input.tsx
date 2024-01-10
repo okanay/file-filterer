@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { InputGroup } from "@/components/search-form/input-group";
 import { useSetAtom } from "jotai/index";
 import { useAtomValue } from "jotai";
-import { customNameAtom, nameOptionAtom } from "@/atoms/form-atoms";
+import { customNameAtom, nameOptionAtom } from "../../atoms/search-form-atoms";
 
 export const CustomNameInput = () => {
   const setCustomName = useSetAtom(customNameAtom);
