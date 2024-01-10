@@ -2,7 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
-import { dateOptionAtom, dateValueFromAtom } from "@/atoms/search-form-atoms";
+import { dateOptionAtom } from "@/atoms/search-form-atoms";
 
 type TProps = React.FC<{}>;
 export const CustomCalendarOption: TProps = () => {

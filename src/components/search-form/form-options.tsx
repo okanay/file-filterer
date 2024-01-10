@@ -4,7 +4,6 @@ import { CustomMaxLength } from "@/components/search-form/custom-max-length";
 import { SuccessMessage } from "@/components/search-form/success-message";
 import { CustomNameOption } from "@/components/search-form/custom-name-option";
 import { CustomCalendarOption } from "@/components/search-form/custom-calendar-option";
-import { WarningMessage } from "@/components/search-form/warning-message";
 
 export const FormOptions = () => {
   return (

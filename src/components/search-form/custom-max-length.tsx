@@ -2,9 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
-import { WarningMessage } from "@/components/search-form/warning-message";
 import { lengthOptionAtom } from "@/atoms/search-form-atoms";
-import { SuccessMessage } from "@/components/search-form/success-message";
 
 type TProps = React.FC<{}>;
 export const CustomMaxLength: TProps = () => {

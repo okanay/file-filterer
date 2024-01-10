@@ -2,8 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
-import { nameOptionAtom } from "../../atoms/search-form-atoms";
-import { CustomNameInput } from "@/components/search-form/custom-name-input";
+import { nameOptionAtom } from "@/atoms/search-form-atoms";
 
 type TProps = React.FC<{}>;
 export const CustomNameOption: TProps = () => {
