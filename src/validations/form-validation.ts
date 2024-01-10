@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ["log", "txt"];
 
 export const fileSchema = z

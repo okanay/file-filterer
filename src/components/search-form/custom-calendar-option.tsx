@@ -1,12 +1,12 @@
 import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useAtom } from "jotai/index";
+import { useSetAtom } from "jotai/index";
 import { dateOptionAtom } from "@/atoms/search-form-atoms";
 
 type TProps = React.FC<{}>;
 export const CustomCalendarOption: TProps = () => {
-  const [dateOption, setDateOption] = useAtom(dateOptionAtom);
+  const setDateOption = useSetAtom(dateOptionAtom);
 
   return (
     <div className={"flex-shrink-0"}>
