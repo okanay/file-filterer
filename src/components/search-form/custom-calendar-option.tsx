@@ -1,19 +1,23 @@
 import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useAtom } from "jotai/index";
+import { dateOptionAtom, dateValueFromAtom } from "@/atoms/search-form-atoms";
 
 type TProps = React.FC<{}>;
 export const CustomCalendarOption: TProps = () => {
+  const [dateOption, setDateOption] = useAtom(dateOptionAtom);
+
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <Label htmlFor="name-option">Customize Date.</Label>
-        <RadioGroup name={"name-option"} defaultValue={"default"}>
+        <Label>Customize Date.</Label>
+        <RadioGroup defaultValue={"default"}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="default"
               id="r1"
-              // onClick={() => setNameOption("default")}
+              onClick={() => setDateOption("default")}
             />
             <Label htmlFor="r1">Default</Label>
           </div>
@@ -21,7 +25,7 @@ export const CustomCalendarOption: TProps = () => {
             <RadioGroupItem
               value="select"
               id="r2"
-              // onClick={() => setNameOption("custom")}
+              onClick={() => setDateOption("select")}
             />
             <Label htmlFor="r2">Select</Label>
           </div>

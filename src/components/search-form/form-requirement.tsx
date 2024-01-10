@@ -7,6 +7,7 @@ import { CustomLengthInput } from "@/components/search-form/custom-length-input"
 import { FormSubmit } from "@/components/search-form/form-submit";
 import { DownloadButton } from "@/components/search-form/download-button";
 import { StatusMessages } from "@/components/search-form/status-message";
+import { CalendarInput } from "@/components/search-form/calendar-input";
 
 export const FormRequirement = () => {
   return (
@@ -18,8 +19,10 @@ export const FormRequirement = () => {
         <form className="flex w-full flex-col gap-4">
           <FileInput />
           <KeywordInput />
-          <CustomNameInput />
+          <div />
           <CustomLengthInput />
+          <CalendarInput />
+          <CustomNameInput />
           <FormSubmit />
         </form>
         <DownloadButton />

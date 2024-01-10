@@ -15,16 +15,14 @@ export const FormOptions = () => {
       <div className="flex w-fit flex-wrap items-start justify-start gap-12">
         <div className={"flex flex-col flex-wrap gap-4"}>
           <CustomMaxLength />
-          <SuccessMessage />
         </div>
         <div className={"flex flex-col flex-wrap gap-4"}>
           <div className={"flex flex-col flex-wrap gap-4"}>
             <CustomNameOption />
-            <SuccessMessage />
           </div>
           <div className={"flex flex-col flex-wrap gap-4"}>
             <CustomCalendarOption />
-            <WarningMessage />
+            <SuccessMessage />
           </div>
         </div>
       </div>

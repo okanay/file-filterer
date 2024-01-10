@@ -6,6 +6,8 @@ import { formValidation } from "@/validations/form-validation";
 import {
   customLengthAtom,
   customNameAtom,
+  dateOptionAtom,
+  dateValueAtom,
   downloadUrlAtom,
   fileAtom,
   keywordAtom,
@@ -26,9 +28,14 @@ export const FormSubmit = () => {
   const lengthOption = useAtomValue(lengthOptionAtom);
   const customLength = useAtomValue(customLengthAtom);
 
+  const dateOption = useAtomValue(dateOptionAtom);
+  const customDate = useAtomValue(dateValueAtom);
+
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
   const handleFormSubmit = async () => {
+    //
+    // Form Validation Here
     const validation = formValidation.safeParse({
       file,
       keywords,
@@ -36,7 +43,11 @@ export const FormSubmit = () => {
       customName,
       lengthOption,
       customLength,
+      dateOption,
+      customDate: customDate?.toDateString(),
     });
+
+    // If Form Not Valid Return.
     if (!validation.success) {
       setStatus({
         type: "error",
@@ -45,6 +56,7 @@ export const FormSubmit = () => {
       return;
     }
 
+    // Send all form input to server.
     setStatus({ type: "loading" });
     setDownloadUrl(undefined);
 
@@ -56,6 +68,8 @@ export const FormSubmit = () => {
       data.set("customName", customName as string);
       data.set("lengthOption", lengthOption);
       data.set("customLength", String(customLength));
+      data.set("dateOption", dateOption);
+      data.set("customDate", String(customDate?.toDateString()));
 
       const res = await fetch("/api/file-convert", {
         method: "POST",

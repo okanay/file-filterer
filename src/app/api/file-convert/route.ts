@@ -1,8 +1,15 @@
-import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
+
+import { NextResponse } from "next/server";
+import {
+  TDateOption,
+  TLengthOption,
+  TNameOption,
+} from "@/atoms/search-form-atoms";
+
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
 import { createFileName } from "@/helpers/create-file-name";
-import { TLengthOption } from "@/atoms/search-form-atoms";
+import { parseDateToString } from "@/helpers/parse-date-toString";
 
 export async function POST(request: Request) {
   try {
@@ -11,12 +18,15 @@ export async function POST(request: Request) {
     const file: File | null = data.get("file") as unknown as File;
     const keywords: string | null = data.get("keywords") as string;
 
-    const nameOption: string | null = data.get("nameOption") as string;
-    const customName: string | null = data.get("customName") as string;
+    const nameOption = data.get("nameOption") as TNameOption;
+    const customName = data.get("customName") as string;
     const fileName = createFileName(file.name, nameOption, customName);
 
     const lengthOption = data.get("lengthOption") as TLengthOption;
-    const customLength: string | null = data.get("customLength") as string;
+    const customLength = data.get("customLength") as string;
+
+    const dateOption = data.get("dateOption") as TDateOption;
+    const customDate = data.get("customDate") as string;
 
     if (!file && !keywords) {
       return NextResponse.json({ success: false });
@@ -28,9 +38,35 @@ export async function POST(request: Request) {
 
     let resultFile;
 
+    const customDateFormat = new Date(customDate);
+    const customDay = customDateFormat.getDate();
+    const customMonth = customDateFormat.getMonth();
+    const customYear = customDateFormat.getFullYear();
+
     resultFile = value.filter((item) => {
       for (const keyToCheck of keywordsSplitWithRegex(keywords)) {
-        if (item.includes(keyToCheck)) return true;
+        if (item.includes(keyToCheck)) {
+          //prettier-ignore
+          if (dateOption === "select")
+          {
+            const lineDate = parseDateToString(item)
+
+            if (lineDate)
+            {
+              const lineDay = lineDate.getDate();
+              const lineMonth = lineDate.getMonth();
+              const lineYear = lineDate.getFullYear();
+
+              if (lineDay === customDay && lineMonth === customMonth && lineYear === customYear) {
+                return true
+              }
+            }
+          }
+          else
+          {
+            return true;
+          }
+        }
       }
     });
 
@@ -53,6 +89,7 @@ export async function POST(request: Request) {
     const { url } = await put(fileName, resultFile, { access: "public" });
     return NextResponse.json({ success: true, url });
   } catch (e) {
+    console.log(e);
     return NextResponse.json({ success: false });
   }
 }

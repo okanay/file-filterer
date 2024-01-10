@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ["log", "txt"];
 
 export const fileSchema = z
@@ -15,6 +15,11 @@ export const fileSchema = z
     "Only these types are allowed .log, .txt."
   );
 
+const dateSchema = z.date({
+  required_error: "Please select a date and time",
+  invalid_type_error: "That's not a date!",
+});
+
 export const formValidation = z
   .object({
     file: fileSchema,
@@ -23,6 +28,8 @@ export const formValidation = z
     customName: z.string(),
     lengthOption: z.string(),
     customLength: z.number(),
+    dateOption: z.string(),
+    customDate: z.any(),
   })
   .superRefine((data, ctx) => {
     if (data.nameOption === "custom") {
@@ -32,8 +39,7 @@ export const formValidation = z
           message: "Please add your custom file name.",
         });
       }
-    }
-    if (
+    } else if (
       data.lengthOption === "first-custom" ||
       data.lengthOption === "last-custom"
     ) {
@@ -41,6 +47,15 @@ export const formValidation = z
         ctx.addIssue({
           code: "custom",
           message: "Please set your custom line length.",
+        });
+      }
+    } else if (data.dateOption === "select") {
+      const checkDate = dateSchema.safeParse(new Date(data.customDate));
+
+      if (!checkDate.success) {
+        ctx.addIssue({
+          code: "custom",
+          message: checkDate.error.errors.at(0)?.message,
         });
       }
     }
