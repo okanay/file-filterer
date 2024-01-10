@@ -21,28 +21,25 @@ export const FormSubmit = () => {
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
   const handleFormSubmit = async () => {
-    setStatus({ type: "initial" });
-    setDownloadUrl(undefined);
-
-    const isValid = formValidation.safeParse({
+    const validation = formValidation.safeParse({
       file,
       keywords,
       nameOption,
       customName,
     });
-
-    if (!isValid.success) {
+    if (!validation.success) {
       setStatus({
         type: "error",
-        message: isValid.error.errors.at(0)?.message,
+        message: validation.error.errors.at(0)?.message,
       });
       return;
     }
 
-    try {
-      setStatus({ type: "loading" });
-      const data = new FormData();
+    setStatus({ type: "loading" });
+    setDownloadUrl(undefined);
 
+    try {
+      const data = new FormData();
       data.set("file", file as File);
       data.set("keywords", keywords as string);
       data.set("nameOption", nameOption);
@@ -52,8 +49,6 @@ export const FormSubmit = () => {
         method: "POST",
         body: data,
       });
-
-      if (!res.ok) throw new Error(await res.text());
       const json = await res.json();
 
       if (!json.success) {
