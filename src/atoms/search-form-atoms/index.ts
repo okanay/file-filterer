@@ -8,6 +8,7 @@ export type TNameOption = "default" | "custom";
 export type TLengthOption =
   | "all"
   | "find-first"
+  | "find-last"
   | "first-custom"
   | "last-custom";
 

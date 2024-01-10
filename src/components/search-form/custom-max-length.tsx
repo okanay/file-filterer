@@ -21,11 +21,19 @@ export const CustomMaxLength: TProps = () => {
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem
-            value="first-line"
+            value="find-line"
             id="r2"
             onClick={() => setValue("find-first")}
           />
           <Label htmlFor="r2">Find First</Label>
+        </div>
+        <div className="flex items-center space-x-2">
+          <RadioGroupItem
+            value="find-last"
+            id="r2"
+            onClick={() => setValue("find-last")}
+          />
+          <Label htmlFor="r2">Find Last</Label>
         </div>
         <div className="flex items-center space-x-2">
           <RadioGroupItem

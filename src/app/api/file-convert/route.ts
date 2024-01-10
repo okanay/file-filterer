@@ -36,6 +36,8 @@ export async function POST(request: Request) {
 
     if (lengthOption === "find-first") {
       resultFile = resultFile.slice(0, 1);
+    } else if (lengthOption === "find-last") {
+      resultFile = resultFile.slice(-1);
     } else if (lengthOption === "first-custom") {
       resultFile = resultFile.slice(0, Number(customLength));
     } else if (lengthOption === "last-custom") {
