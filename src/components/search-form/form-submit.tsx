@@ -15,6 +15,10 @@ import {
   nameOptionAtom,
   statusAtom,
 } from "@/atoms/search-form-atoms";
+import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { parseDateToString } from "@/helpers/parse-date-toString";
+import { NextResponse } from "next/server";
+import { createFileName } from "@/helpers/create-file-name";
 
 export const FormSubmit = () => {
   const [status, setStatus] = useAtom(statusAtom);
@@ -62,13 +66,8 @@ export const FormSubmit = () => {
     try {
       const data = new FormData();
       data.set("file", file as File);
-      data.set("keywords", keywords as string);
       data.set("nameOption", nameOption);
       data.set("customName", customName as string);
-      data.set("lengthOption", lengthOption);
-      data.set("customLength", String(customLength));
-      data.set("dateOption", dateOption);
-      data.set("customDate", String(customDate?.toDateString()));
 
       const res = await fetch("/api/s3-file-convert", {
         method: "POST",
@@ -79,13 +78,84 @@ export const FormSubmit = () => {
       if (!json.success) {
         setStatus({
           type: "error",
-          message:
-            "The filtering based on the searched keyword could not be performed.",
+          message: "AWS URL NOT CREATED!",
         });
         return;
       }
 
-      setDownloadUrl(json.url);
+      // FILTER FILE
+
+      const signedUrl = json.signedUrl;
+
+      const customDateFormat = new Date(customDate!);
+      const customDay = customDateFormat.getDate();
+      const customMonth = customDateFormat.getMonth();
+      const customYear = customDateFormat.getFullYear();
+
+      const bytes = await file!.arrayBuffer();
+      const buffer = Buffer.from(bytes);
+      const bufferToString = buffer.toString("utf8").split("\n");
+
+      let resultFile;
+
+      resultFile = bufferToString.filter((item) => {
+        for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+          if (item.includes(keyToCheck)) {
+            //prettier-ignore
+            if (dateOption === "select")
+            {
+              const lineDate = parseDateToString(item)
+
+              if (lineDate)
+              {
+                const lineDay = lineDate.getDate();
+                const lineMonth = lineDate.getMonth();
+                const lineYear = lineDate.getFullYear();
+
+                if (lineDay === customDay && lineMonth === customMonth && lineYear === customYear) {
+                  return true
+                }
+              }
+            }
+            else
+            {
+              return true;
+            }
+          }
+        }
+      });
+
+      if (lengthOption === "find-first") {
+        resultFile = resultFile.slice(0, 1);
+      } else if (lengthOption === "find-last") {
+        resultFile = resultFile.slice(-1);
+      } else if (lengthOption === "first-custom") {
+        resultFile = resultFile.slice(0, Number(customLength));
+      } else if (lengthOption === "last-custom") {
+        resultFile = resultFile.slice(Number(customLength) * -1);
+      }
+
+      resultFile = resultFile.join("\n");
+
+      if (resultFile.length === 0) {
+        console.log("empty");
+        return;
+      }
+
+      const filteredFileBuffer = Buffer.from(resultFile, "utf8");
+
+      await fetch(signedUrl, {
+        method: "PUT",
+        body: filteredFileBuffer,
+        headers: {
+          "Content-Type": file!.type,
+        },
+      });
+
+      const fileName = createFileName(file!.name, nameOption, customName!);
+      const url = `https://file-filter-local-bucket.s3.eu-central-1.amazonaws.com/${fileName}`;
+
+      setDownloadUrl(url);
       setStatus({ type: "success" });
     } catch (e: any) {
       setStatus({
