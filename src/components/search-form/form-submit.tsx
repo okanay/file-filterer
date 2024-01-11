@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
 import { useAtom, useSetAtom } from "jotai/index";
-import { MAX_BYTE } from "@/constants";
+import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { parseDateToString } from "@/helpers/parse-date-toString";
+import { createFileName } from "@/helpers/create-file-name";
 import { formValidation } from "@/validations/form-validation";
 import {
   customLengthAtom,
@@ -14,11 +16,9 @@ import {
   lengthOptionAtom,
   nameOptionAtom,
   statusAtom,
+  TDateOption,
+  TLengthOption,
 } from "@/atoms/search-form-atoms";
-import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
-import { parseDateToString } from "@/helpers/parse-date-toString";
-import { NextResponse } from "next/server";
-import { createFileName } from "@/helpers/create-file-name";
 
 export const FormSubmit = () => {
   const [status, setStatus] = useAtom(statusAtom);
@@ -59,14 +59,14 @@ export const FormSubmit = () => {
       return;
     }
 
-    // Create S3 Bucket PUT URL
-    setStatus({ type: "loading" });
-    setDownloadUrl(undefined);
-
     try {
-      const fileName = createFileName(file!.name, nameOption, customName!);
+      setStatus({ type: "loading" });
+      setDownloadUrl(undefined);
 
+      // Create S3 Bucket PUT URL
+      const fileName = createFileName(file!.name, nameOption, customName!);
       const data = new FormData();
+
       data.set("file-name", fileName);
 
       const res = await fetch("/api/s3-put-url-create", {
@@ -89,49 +89,20 @@ export const FormSubmit = () => {
 
       const bytes = await file!.arrayBuffer();
       const buffer = Buffer.from(bytes);
-      const bufferToString = buffer.toString("utf8").split("\n");
+      const fileToStringArray = buffer.toString("utf8").split("\n");
 
-      const customDateFormat = new Date(customDate!);
-      const customDay = customDateFormat.getDate();
-      const customMonth = customDateFormat.getMonth();
-      const customYear = customDateFormat.getFullYear();
+      resultFile = FilterWithKeywords(
+        fileToStringArray,
+        keywords as string,
+        dateOption,
+        customDate as Date
+      );
 
-      resultFile = bufferToString.filter((item) => {
-        for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
-          if (item.includes(keyToCheck)) {
-            //prettier-ignore
-            if (dateOption === "select")
-            {
-              const lineDate = parseDateToString(item)
-
-              if (lineDate)
-              {
-                const lineDay = lineDate.getDate();
-                const lineMonth = lineDate.getMonth();
-                const lineYear = lineDate.getFullYear();
-
-                if (lineDay === customDay && lineMonth === customMonth && lineYear === customYear) {
-                  return true
-                }
-              }
-            }
-            else
-            {
-              return true;
-            }
-          }
-        }
-      });
-
-      if (lengthOption === "find-first") {
-        resultFile = resultFile.slice(0, 1);
-      } else if (lengthOption === "find-last") {
-        resultFile = resultFile.slice(-1);
-      } else if (lengthOption === "first-custom") {
-        resultFile = resultFile.slice(0, Number(customLength));
-      } else if (lengthOption === "last-custom") {
-        resultFile = resultFile.slice(Number(customLength) * -1);
-      }
+      resultFile = FilterWithCustomLength(
+        resultFile,
+        lengthOption,
+        customLength!
+      );
 
       resultFile = resultFile.join("\n");
 
@@ -152,15 +123,13 @@ export const FormSubmit = () => {
       await fetch(signedUrl, {
         method: "PUT",
         body: filteredFileBuffer,
-        headers: {
-          "Content-Type": "text/csv",
-        },
       });
 
       const url = `https://file-filter-local-bucket.s3.eu-central-1.amazonaws.com/${fileName}`;
-
       setDownloadUrl(url);
       setStatus({ type: "success" });
+      //
+      //
     } catch (e: any) {
       setStatus({
         type: "error",
@@ -179,3 +148,65 @@ export const FormSubmit = () => {
     </Button>
   );
 };
+
+function FilterWithCustomLength(
+  resultFile: string[],
+  lengthOption: TLengthOption,
+  customLength: number
+) {
+  switch (lengthOption) {
+    case "all":
+      return resultFile;
+    case "find-first": {
+      return resultFile.slice(0, 1);
+    }
+    case "find-last": {
+      return resultFile.slice(-1);
+    }
+    case "first-custom": {
+      return resultFile.slice(0, Number(customLength));
+    }
+    case "last-custom": {
+      return resultFile.slice(Number(customLength) * -1);
+    }
+  }
+}
+
+function FilterWithKeywords(
+  fileToStringArray: string[],
+  keywords: string,
+  dateOption: TDateOption,
+  customDate: Date
+) {
+  const customDateFormat = new Date(customDate!);
+  const customDay = customDateFormat.getDate();
+  const customMonth = customDateFormat.getMonth();
+  const customYear = customDateFormat.getFullYear();
+
+  return fileToStringArray.filter((item) => {
+    for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+      if (item.includes(keyToCheck)) {
+        //prettier-ignore
+        if (dateOption === "select")
+        {
+          const lineDate = parseDateToString(item)
+
+          if (lineDate)
+          {
+            const lineDay = lineDate.getDate();
+            const lineMonth = lineDate.getMonth();
+            const lineYear = lineDate.getFullYear();
+
+            if (lineDay === customDay && lineMonth === customMonth && lineYear === customYear) {
+              return true
+            }
+          }
+        }
+        else
+        {
+          return true;
+        }
+      }
+    }
+  });
+}

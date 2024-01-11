@@ -20,9 +20,9 @@ export const FormRequirement = () => {
           <FileInput />
           <KeywordInput />
           <div />
+          <CustomNameInput />
           <CustomLengthInput />
           <CalendarInput />
-          <CustomNameInput />
           <FormSubmit />
         </form>
         <DownloadButton />
