@@ -23,11 +23,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.formData();
 
-    const file: File | null = data.get("file") as unknown as File;
-
-    const nameOption = data.get("nameOption") as TNameOption;
-    const customName = data.get("customName") as string;
-    const fileName = createFileName(file.name, nameOption, customName);
+    const fileName = data.get("file-name") as string;
 
     // S3 Operation.
     const putObjectCommand = new PutObjectCommand({

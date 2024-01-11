@@ -64,10 +64,10 @@ export const FormSubmit = () => {
     setDownloadUrl(undefined);
 
     try {
+      const fileName = createFileName(file!.name, nameOption, customName!);
+
       const data = new FormData();
-      data.set("file", file as File);
-      data.set("nameOption", nameOption);
-      data.set("customName", customName as string);
+      data.set("file-name", fileName);
 
       const res = await fetch("/api/s3-file-convert", {
         method: "POST",
@@ -152,7 +152,6 @@ export const FormSubmit = () => {
         },
       });
 
-      const fileName = createFileName(file!.name, nameOption, customName!);
       const url = `https://file-filter-local-bucket.s3.eu-central-1.amazonaws.com/${fileName}`;
 
       setDownloadUrl(url);
