@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
-const ACCEPTED_IMAGE_TYPES = ["log", "txt"];
+const ACCEPTED_IMAGE_TYPES = ["log"];
 
 export const fileSchema = z
   .custom<File>()
@@ -12,7 +12,7 @@ export const fileSchema = z
   .refine(
     (file) =>
       ACCEPTED_IMAGE_TYPES.includes(file?.name.split(".").at(-1) as string),
-    "Only these types are allowed .log, .txt."
+    "Only these type are allowed .log"
   );
 
 const dateSchema = z.date({

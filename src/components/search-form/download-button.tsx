@@ -1,5 +1,5 @@
 import { useAtomValue } from "jotai";
-import { downloadUrlAtom, statusAtom } from "../../atoms/search-form-atoms";
+import { downloadUrlAtom, statusAtom } from "@/atoms/search-form-atoms";
 import { Button } from "@/components/ui/button";
 
 export const DownloadButton = () => {
@@ -13,8 +13,8 @@ export const DownloadButton = () => {
         status.type !== "success" && "cursor-no-drop bg-zinc-700 opacity-75"
       }`}
     >
-      <a className={"cursor-pointer"} href={downloadUrl} target={"_blank"}>
-        Download File.
+      <a href={downloadUrl} target="_blank">
+        Get From S3
       </a>
     </Button>
   );

@@ -29,6 +29,7 @@ export async function POST(request: Request) {
     const putObjectCommand = new PutObjectCommand({
       Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME!,
       Key: fileName,
+      ContentType: ".log",
     });
 
     const signedUrl = await getSignedUrl(s3, putObjectCommand, {

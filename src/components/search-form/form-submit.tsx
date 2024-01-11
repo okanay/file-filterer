@@ -59,7 +59,7 @@ export const FormSubmit = () => {
       return;
     }
 
-    // Send all form input to server.
+    // Create S3 Bucket PUT URL
     setStatus({ type: "loading" });
     setDownloadUrl(undefined);
 
@@ -69,34 +69,32 @@ export const FormSubmit = () => {
       const data = new FormData();
       data.set("file-name", fileName);
 
-      const res = await fetch("/api/s3-file-convert", {
+      const res = await fetch("/api/s3-put-url-create", {
         method: "POST",
         body: data,
       });
-      const json = await res.json();
 
-      if (!json.success) {
+      const awsPutUrlFetchResponseJSON = await res.json();
+
+      if (!awsPutUrlFetchResponseJSON.success) {
         setStatus({
           type: "error",
-          message: "AWS URL NOT CREATED!",
+          message: "System not working as usual.",
         });
         return;
       }
 
-      // FILTER FILE
-
-      const signedUrl = json.signedUrl;
-
-      const customDateFormat = new Date(customDate!);
-      const customDay = customDateFormat.getDate();
-      const customMonth = customDateFormat.getMonth();
-      const customYear = customDateFormat.getFullYear();
+      // Filter file with options.
+      let resultFile;
 
       const bytes = await file!.arrayBuffer();
       const buffer = Buffer.from(bytes);
       const bufferToString = buffer.toString("utf8").split("\n");
 
-      let resultFile;
+      const customDateFormat = new Date(customDate!);
+      const customDay = customDateFormat.getDate();
+      const customMonth = customDateFormat.getMonth();
+      const customYear = customDateFormat.getFullYear();
 
       resultFile = bufferToString.filter((item) => {
         for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
@@ -138,17 +136,24 @@ export const FormSubmit = () => {
       resultFile = resultFile.join("\n");
 
       if (resultFile.length === 0) {
-        console.log("empty");
+        setStatus({
+          type: "error",
+          message: "There is no row return. Please change your options.",
+        });
         return;
       }
 
-      const filteredFileBuffer = Buffer.from(resultFile, "utf8");
+      const filteredFileBuffer = new Blob([resultFile], {
+        type: "text/csv",
+      });
+
+      const signedUrl = awsPutUrlFetchResponseJSON.signedUrl;
 
       await fetch(signedUrl, {
         method: "PUT",
         body: filteredFileBuffer,
         headers: {
-          "Content-Type": file!.type,
+          "Content-Type": "text/csv",
         },
       });
 
