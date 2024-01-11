@@ -14,7 +14,7 @@ export const DownloadButton = () => {
       }`}
     >
       <a href={downloadUrl} target="_blank">
-        Get From S3
+        Download Filtered File
       </a>
     </Button>
   );
