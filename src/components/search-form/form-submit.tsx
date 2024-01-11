@@ -34,7 +34,6 @@ export const FormSubmit = () => {
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
   const handleFormSubmit = async () => {
-    //
     // Form Validation Here
     const validation = formValidation.safeParse({
       file,
@@ -71,7 +70,7 @@ export const FormSubmit = () => {
       data.set("dateOption", dateOption);
       data.set("customDate", String(customDate?.toDateString()));
 
-      const res = await fetch("/api/file-convert", {
+      const res = await fetch("/api/s3-file-convert", {
         method: "POST",
         body: data,
       });

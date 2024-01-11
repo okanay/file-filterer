@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const MAX_FILE_SIZE = 4.5 * 1024 * 1024;
+const MAX_FILE_SIZE = 20 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ["log", "txt"];
 
 export const fileSchema = z
@@ -8,7 +8,7 @@ export const fileSchema = z
   .refine((file) => file !== undefined, "Expected file")
   .refine((file) => {
     return file?.size <= MAX_FILE_SIZE;
-  }, `File size should be less than 4.5mb.`)
+  }, `File size should be less than 20MB.`)
   .refine(
     (file) =>
       ACCEPTED_IMAGE_TYPES.includes(file?.name.split(".").at(-1) as string),
