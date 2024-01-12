@@ -1,13 +1,13 @@
 "use client";
 
-import { FileInput } from "@/components/search-form/file-input";
-import { KeywordInput } from "@/components/search-form/keyword-input";
-import { CustomNameInput } from "@/components/search-form/custom-name-input";
-import { CustomLengthInput } from "@/components/search-form/custom-length-input";
-import { FormSubmit } from "@/components/search-form/form-submit";
+import { FileInput } from "@/components/search-form/inputs/file-input";
+import { KeywordInput } from "@/components/search-form/inputs/keyword-input";
+import { CustomNameInput } from "@/components/search-form/inputs/custom-name-input";
+import { CustomLengthInput } from "@/components/search-form/inputs/custom-length-input";
+import { FormSubmitButton } from "@/components/search-form/form-submit-button";
 import { DownloadButton } from "@/components/search-form/download-button";
-import { StatusMessages } from "@/components/search-form/status-message";
-import { CalendarInput } from "@/components/search-form/calendar-input";
+import { StatusMessages } from "@/components/search-form/messages/status-message";
+import { CalendarInput } from "@/components/search-form/inputs/calendar-input";
 
 export const FormRequirement = () => {
   return (
@@ -23,7 +23,7 @@ export const FormRequirement = () => {
           <CustomNameInput />
           <CustomLengthInput />
           <CalendarInput />
-          <FormSubmit />
+          <FormSubmitButton />
         </form>
         <DownloadButton />
         <StatusMessages />

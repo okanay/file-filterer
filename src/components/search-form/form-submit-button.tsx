@@ -12,15 +12,17 @@ import {
   dateValueAtom,
   downloadUrlAtom,
   fileAtom,
+  filterOptionAtom,
   keywordAtom,
   lengthOptionAtom,
   nameOptionAtom,
   statusAtom,
   TDateOption,
+  TFilterOption,
   TLengthOption,
 } from "@/atoms/search-form-atoms";
 
-export const FormSubmit = () => {
+export const FormSubmitButton = () => {
   const [status, setStatus] = useAtom(statusAtom);
 
   const file = useAtomValue(fileAtom);
@@ -34,6 +36,8 @@ export const FormSubmit = () => {
 
   const dateOption = useAtomValue(dateOptionAtom);
   const customDate = useAtomValue(dateValueAtom);
+
+  const filterOption = useAtomValue(filterOptionAtom);
 
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
@@ -95,7 +99,8 @@ export const FormSubmit = () => {
         fileToStringArray,
         keywords as string,
         dateOption,
-        customDate as Date
+        customDate as Date,
+        filterOption
       );
 
       resultFile = FilterWithCustomLength(
@@ -176,7 +181,8 @@ function FilterWithKeywords(
   fileToStringArray: string[],
   keywords: string,
   dateOption: TDateOption,
-  customDate: Date
+  customDate: Date,
+  filterOption: TFilterOption
 ) {
   const customDateFormat = new Date(customDate!);
   const customDay = customDateFormat.getDate();
@@ -184,26 +190,35 @@ function FilterWithKeywords(
   const customYear = customDateFormat.getFullYear();
 
   return fileToStringArray.filter((item) => {
+    const checkDate = () => {
+      const lineDate = parseDateToString(item);
+
+      if (lineDate) {
+        const lineDay = lineDate.getDate();
+        const lineMonth = lineDate.getMonth();
+        const lineYear = lineDate.getFullYear();
+
+        return (
+          lineDay === customDay &&
+          lineMonth === customMonth &&
+          lineYear === customYear
+        );
+      } else return false;
+    };
+
+    if (filterOption === "match all") {
+      for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+        if (!item.includes(keyToCheck)) {
+          return false;
+        }
+      }
+    }
+
     for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
       if (item.includes(keyToCheck)) {
-        //prettier-ignore
-        if (dateOption === "select")
-        {
-          const lineDate = parseDateToString(item)
-
-          if (lineDate)
-          {
-            const lineDay = lineDate.getDate();
-            const lineMonth = lineDate.getMonth();
-            const lineYear = lineDate.getFullYear();
-
-            if (lineDay === customDay && lineMonth === customMonth && lineYear === customYear) {
-              return true
-            }
-          }
-        }
-        else
-        {
+        if (dateOption === "select") {
+          return checkDate();
+        } else {
           return true;
         }
       }

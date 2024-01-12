@@ -1,7 +1,7 @@
 import { Badge } from "@/components/ui/badge";
 import { nanoid } from "nanoid";
 import { useAtom } from "jotai/index";
-import { keywordsListAtom } from "../../atoms/search-form-atoms";
+import { keywordsListAtom } from "@/atoms/search-form-atoms";
 
 export const KeywordsList = () => {
   const [keywordsList, setKeywordsList] = useAtom(keywordsListAtom);

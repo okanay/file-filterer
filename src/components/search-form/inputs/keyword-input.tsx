@@ -5,7 +5,10 @@ import { KeywordsList } from "@/components/search-form/keywords-list";
 import { useEffect } from "react";
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
 import { useAtom, useSetAtom } from "jotai/index";
-import { keywordAtom, keywordsListAtom } from "../../atoms/search-form-atoms";
+import {
+  keywordAtom,
+  keywordsListAtom,
+} from "../../../atoms/search-form-atoms";
 
 export const KeywordInput = () => {
   const [keywords, setKeywords] = useAtom(keywordAtom);
