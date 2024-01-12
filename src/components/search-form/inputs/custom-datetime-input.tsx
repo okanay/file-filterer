@@ -17,7 +17,7 @@ export const CustomDateTimeInput = () => {
         <div className="flex w-full flex-col items-end justify-center gap-4">
           <div className={"flex items-center justify-start gap-4"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className={"max-w-[320px] text-end leading-5 tracking-wider"}
               htmlFor="hour-from"
             >
               Target Hour
@@ -42,7 +42,7 @@ export const CustomDateTimeInput = () => {
           </div>
           <div className={"flex items-center justify-start gap-4"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className={"max-w-[320px] text-end leading-5 tracking-wider"}
               htmlFor="minute-from"
             >
               Target Minute
@@ -75,7 +75,7 @@ export const CustomDateTimeInput = () => {
         <div className="flex w-full items-center justify-between gap-4">
           <div className={"flex w-[188px] items-center justify-between"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className={"max-w-[320px] text-end leading-4 tracking-wider"}
               htmlFor="hour-from"
             >
               Hour From
@@ -100,7 +100,7 @@ export const CustomDateTimeInput = () => {
           </div>
           <div className={"flex w-[188px] items-center justify-between"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className={"max-w-[320px] text-end leading-4 tracking-wider"}
               htmlFor="hour-to"
             >
               Hour To
@@ -127,7 +127,7 @@ export const CustomDateTimeInput = () => {
         <div className="flex w-full items-center justify-between gap-4">
           <div className={"flex w-[188px] items-center justify-between"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className={"max-w-[320px] text-end leading-4 tracking-wider"}
               htmlFor="minute-from"
             >
               Minute From
@@ -152,7 +152,7 @@ export const CustomDateTimeInput = () => {
           </div>
           <div className={"flex w-[188px] items-center justify-between"}>
             <Label
-              className={"max-w-[320px] leading-4 tracking-wider"}
+              className="max-w-[320px] text-end leading-4 tracking-wider"
               htmlFor="minute-to"
             >
               Minute To

@@ -48,9 +48,9 @@ export function CalendarInput() {
     return (
       <div className={"flex flex-col gap-2"}>
         <Label>
-          Date Between{" "}
-          <span className={"text-amber-500 underline underline-offset-[3px]"}>
-            One
+          Date{" "}
+          <span className={"text-amber-600 underline underline-offset-4"}>
+            Select
           </span>
         </Label>
         <Popover>
@@ -86,12 +86,11 @@ export function CalendarInput() {
   if (dateOption === "between-two")
     return (
       <>
-        <EarlyAccessMessage />
         <div className={"flex flex-col gap-2"}>
           <Label>
-            Date Between{" "}
-            <span className={"text-amber-500 underline underline-offset-[3px]"}>
-              Two
+            Date{" "}
+            <span className={"text-amber-600 underline underline-offset-4"}>
+              Between
             </span>
           </Label>
           <Popover>
