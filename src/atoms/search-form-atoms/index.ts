@@ -39,7 +39,7 @@ export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
 export type TFilterOption = "match one" | "match all";
 export const filterOptionAtom = atom<TFilterOption>("match one");
 
-export type TDateTimeOption = "default" | "custom";
+export type TDateTimeOption = "default" | "select" | "between";
 export const dateTimeOptionAtom = atom<TDateTimeOption>("default");
 
 export type TDateTimeValue = {

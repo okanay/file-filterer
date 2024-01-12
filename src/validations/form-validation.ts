@@ -22,7 +22,20 @@ const dateSchema = z.date({
   invalid_type_error: "That's not a date!",
 });
 
-const dateTimeValueSchema = z
+const dateTimeSelectSchema = z.object({
+  from: z.object({
+    hour: z
+      .number()
+      .min(0, { message: "Hour should be between 0 and 24." })
+      .max(24, { message: "Hour should be between 0 and 24." }),
+    minute: z
+      .number()
+      .min(0, { message: "Minute should be between 0 and 60." })
+      .max(60, { message: "Minute should be between 0 and 60." }),
+  }),
+});
+
+const dateTimeBetweenSchema = z
   .object({
     from: z.object({
       hour: z
@@ -118,8 +131,25 @@ export const formValidation = z
         });
       }
     }
-    if (data.dateTimeOption === "custom") {
-      const checkDateValues = dateTimeValueSchema.safeParse(data.dateTimeValue);
+    if (data.dateTimeOption === "between") {
+      const checkDateValues = dateTimeBetweenSchema.safeParse(
+        data.dateTimeValue
+      );
+
+      if (!checkDateValues.success) {
+        ctx.addIssue({
+          code: "custom",
+          message: checkDateValues.error.errors.at(0)?.message,
+        });
+
+        return;
+      }
+    }
+
+    if (data.dateTimeOption === "select") {
+      const checkDateValues = dateTimeSelectSchema.safeParse(
+        data.dateTimeValue
+      );
 
       if (!checkDateValues.success) {
         ctx.addIssue({

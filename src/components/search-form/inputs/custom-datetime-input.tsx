@@ -11,8 +11,62 @@ export const CustomDateTimeInput = () => {
   const setDateTime = useSetAtom(dateTimeValueAtom);
   const dateTimeOption = useAtomValue(dateTimeOptionAtom);
 
-  return (
-    dateTimeOption === "custom" && (
+  if (dateTimeOption === "select")
+    return (
+      <div className={"flex flex-col gap-4"}>
+        <div className="flex w-full flex-col items-end justify-center gap-4">
+          <div className={"flex items-center justify-start gap-4"}>
+            <Label
+              className={"max-w-[320px] leading-4 tracking-wider"}
+              htmlFor="hour-from"
+            >
+              Target Hour
+            </Label>
+            <Input
+              type="number"
+              id="hour-from"
+              placeholder="0"
+              onChange={(e) => {
+                setDateTime((prev) => ({
+                  ...prev,
+                  from: {
+                    ...prev.from,
+                    hour: Number(e.target.value),
+                  },
+                }));
+              }}
+              className={"-mt-1 max-w-[80px]"}
+            />
+          </div>
+          <div className={"flex items-center justify-start gap-4"}>
+            <Label
+              className={"max-w-[320px] leading-4 tracking-wider"}
+              htmlFor="minute-from"
+            >
+              Target Minute
+            </Label>
+            <Input
+              type="number"
+              id="minute-from"
+              placeholder="0"
+              onChange={(e) => {
+                setDateTime((prev) => ({
+                  ...prev,
+                  from: {
+                    ...prev.from,
+                    minute: Number(e.target.value),
+                  },
+                }));
+              }}
+              className={"-mt-1 max-w-[80px]"}
+            />
+          </div>
+        </div>
+      </div>
+    );
+
+  if (dateTimeOption === "between")
+    return (
       <div className={"flex flex-col gap-4"}>
         <div className="flex w-full items-center justify-between gap-4">
           <div className={"flex w-[188px] items-center justify-between"}>
@@ -112,6 +166,5 @@ export const CustomDateTimeInput = () => {
           </div>
         </div>
       </div>
-    )
-  );
+    );
 };

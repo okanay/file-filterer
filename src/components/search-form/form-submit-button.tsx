@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
 import { useAtom, useSetAtom } from "jotai/index";
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
-import { parseDateToString, parseLogDate } from "@/helpers/parse-date-toString";
+import { parseLogDate } from "@/helpers/parse-date-toString";
 import { createFileName } from "@/helpers/create-file-name";
 import { formValidation } from "@/validations/form-validation";
 import {
@@ -275,7 +275,7 @@ function FilterWithDate(
           customYearTo >= lineYear
         );
       } else return false;
-    }
+    } else return true;
   });
 }
 
@@ -287,9 +287,21 @@ function FilterWithDateTimeValue(
   const customFrom =
     dateFilterValue.from.hour * 60 + dateFilterValue.from.minute;
   const customTo = dateFilterValue.to.hour * 60 + dateFilterValue.to.minute;
-
   return fileToStringArray.filter((item) => {
-    if (dateFilterOption === "custom") {
+    if (dateFilterOption === "select") {
+      const lineDate = parseLogDate(item);
+
+      if (lineDate) {
+        const lineHour = lineDate.getHours();
+        const lineMin = lineDate.getMinutes();
+
+        const lineTime = lineHour * 60 + lineMin;
+
+        if (customFrom === lineTime) {
+          return true;
+        }
+      }
+    } else if (dateFilterOption === "between") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -304,4 +316,6 @@ function FilterWithDateTimeValue(
       }
     } else return true;
   });
+
+  return fileToStringArray;
 }
