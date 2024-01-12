@@ -22,11 +22,19 @@ export const CustomCalendarOption = () => {
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="select"
+              value="between-one"
               id="r2"
-              onClick={() => setFilterOption("select")}
+              onClick={() => setFilterOption("between-one")}
             />
-            <Label htmlFor="r2">Select</Label>
+            <Label htmlFor="r2">Between One Date</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="between-two"
+              id="r3"
+              onClick={() => setFilterOption("between-two")}
+            />
+            <Label htmlFor="r2">Between Two Date</Label>
           </div>
         </RadioGroup>
       </InputGroup>

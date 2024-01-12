@@ -1,11 +1,13 @@
 import { z } from "zod";
+import { useAtom } from "jotai/index";
+import { dateValuesAtom } from "@/atoms/search-form-atoms";
 
 const MAX_FILE_SIZE = 20 * 1024 * 1024;
 const ACCEPTED_IMAGE_TYPES = ["log"];
 
 export const fileSchema = z
   .custom<File>()
-  .refine((file) => file !== undefined, "Expected file")
+  .refine((file) => file !== undefined, "Expected file.")
   .refine((file) => {
     return file?.size <= MAX_FILE_SIZE;
   }, `File size should be less than 20MB.`)
@@ -68,6 +70,7 @@ export const formValidation = z
     customLength: z.number(),
     dateOption: z.string(),
     customDate: z.any(),
+    customDates: z.any(),
     dateTimeOption: z.string(),
     dateTimeValue: z.any(),
   })
@@ -93,16 +96,28 @@ export const formValidation = z
       }
     }
 
-    if (data.dateOption === "select") {
+    if (data.dateOption === "between-one") {
       const checkDate = dateSchema.safeParse(new Date(data.customDate));
       if (!checkDate.success) {
         ctx.addIssue({
           code: "custom",
-          message: checkDate.error.errors.at(0)?.message,
+          message: "Please select your date.",
         });
       }
     }
+    if (data.dateOption === "between-two") {
+      const checkDatesFrom = dateSchema.safeParse(
+        new Date(data.customDates?.from)
+      );
+      const checkDatesTo = dateSchema.safeParse(new Date(data.customDates?.to));
 
+      if (!checkDatesFrom.success || !checkDatesTo.success) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Please select your dates.",
+        });
+      }
+    }
     if (data.dateTimeOption === "custom") {
       const checkDateValues = dateTimeValueSchema.safeParse(data.dateTimeValue);
 

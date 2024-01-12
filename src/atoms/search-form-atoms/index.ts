@@ -29,9 +29,12 @@ export type TLengthOption =
 export const lengthOptionAtom = atom<TLengthOption>("all");
 export const customLengthAtom = atom<undefined | number>(0);
 
-export type TDateOption = "default" | "select";
+export type TDateOption = "default" | "between-one" | "between-two";
 export const dateOptionAtom = atom<TDateOption>("default");
 export const dateValueAtom = atom<Date | undefined>(undefined);
+
+export type TDateValues = { from: Date; to: Date };
+export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
 
 export type TFilterOption = "match one" | "match all";
 export const filterOptionAtom = atom<TFilterOption>("match one");

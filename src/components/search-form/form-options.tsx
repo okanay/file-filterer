@@ -16,18 +16,12 @@ export const FormOptions = () => {
       <div className="flex flex-wrap items-center justify-center gap-8 sm:flex-nowrap sm:items-start sm:justify-start">
         <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
           <CustomCalendarOption />
-          <div className={"flex flex-col gap-2"}>
-            <CustomDatetimeOption />
-            <SuccessMessage />
-          </div>
+          <CustomDatetimeOption />
           <CustomMaxLength />
         </div>
         <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
           <CustomNameOption />
-          <div className={"flex flex-col gap-2"}>
-            <CustomFilterOption />
-            <SuccessMessage />
-          </div>
+          <CustomFilterOption />
         </div>
       </div>
     </div>

@@ -12,6 +12,7 @@ import {
   dateTimeOptionAtom,
   dateTimeValueAtom,
   dateValueAtom,
+  dateValuesAtom,
   downloadUrlAtom,
   fileAtom,
   filterOptionAtom,
@@ -22,6 +23,7 @@ import {
   TDateOption,
   TDateTimeOption,
   TDateTimeValue,
+  TDateValues,
   TFilterOption,
   TLengthOption,
 } from "@/atoms/search-form-atoms";
@@ -40,6 +42,7 @@ export const FormSubmitButton = () => {
 
   const dateOption = useAtomValue(dateOptionAtom);
   const customDate = useAtomValue(dateValueAtom);
+  const customDates = useAtomValue(dateValuesAtom);
 
   const filterOption = useAtomValue(filterOptionAtom);
 
@@ -58,7 +61,8 @@ export const FormSubmitButton = () => {
       lengthOption,
       customLength,
       dateOption,
-      customDate: customDate?.toDateString(),
+      customDate,
+      customDates,
       dateTimeOption,
       dateTimeValue,
     });
@@ -110,7 +114,12 @@ export const FormSubmitButton = () => {
         filterOption
       );
 
-      resultFile = FilterWithDate(resultFile, dateOption, customDate as Date);
+      resultFile = FilterWithDate(
+        resultFile,
+        dateOption,
+        customDate as Date,
+        customDates as TDateValues
+      );
 
       resultFile = FilterWithDateTimeValue(
         resultFile,
@@ -217,15 +226,25 @@ function FilterWithKeywords(
 function FilterWithDate(
   fileToStringArray: string[],
   dateOption: TDateOption,
-  customDate: Date
+  customDate: Date,
+  customDates: TDateValues
 ) {
   const customDateFormat = new Date(customDate!);
   const customDay = customDateFormat.getDate();
   const customMonth = customDateFormat.getMonth();
   const customYear = customDateFormat.getFullYear();
 
+  const customDayFrom = customDates?.from?.getDate();
+  const customDayTo = customDates?.to?.getDate();
+
+  const customMonthFrom = customDates?.from?.getMonth();
+  const customMonthTo = customDates?.to?.getMonth();
+
+  const customYearFrom = customDates?.from?.getFullYear();
+  const customYearTo = customDates?.to?.getFullYear();
+
   return fileToStringArray.filter((item) => {
-    if (dateOption === "select") {
+    if (dateOption === "between-one") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -239,8 +258,24 @@ function FilterWithDate(
           lineYear === customYear
         );
       } else return false;
+    } else if (dateOption === "between-two") {
+      const lineDate = parseLogDate(item);
+
+      if (lineDate) {
+        const lineDay = lineDate.getDate();
+        const lineMonth = lineDate.getMonth();
+        const lineYear = lineDate.getFullYear();
+
+        return (
+          customDayFrom <= lineDay &&
+          customDayTo >= lineDay &&
+          customMonthFrom <= lineMonth &&
+          customMonthTo >= lineMonth &&
+          customYearFrom <= lineYear &&
+          customYearTo >= lineYear
+        );
+      } else return false;
     }
-    return true;
   });
 }
 

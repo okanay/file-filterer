@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Log File Filterer.",
-  description: "This project only run in dev mode.",
+  description: "This project belongs to Spyke Games.",
 };
 
 export default function RootLayout({
