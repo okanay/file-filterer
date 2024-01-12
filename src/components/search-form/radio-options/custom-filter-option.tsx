@@ -15,18 +15,18 @@ export const CustomFilterOption = () => {
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="match one"
-              id="r1"
+              id="r1-filter-type"
               onClick={() => setFilterOption("match one")}
             />
-            <Label htmlFor="r1">Match One Keyword</Label>
+            <Label htmlFor="r1-filter-type">Match One Keyword</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="match all"
-              id="r2"
+              id="r2-filter-type"
               onClick={() => setFilterOption("match all")}
             />
-            <Label htmlFor="r2">Match All Keywords</Label>
+            <Label htmlFor="r2-filter-type">Match All Keywords</Label>
           </div>
         </RadioGroup>
       </InputGroup>

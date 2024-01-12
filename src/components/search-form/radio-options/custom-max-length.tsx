@@ -15,42 +15,42 @@ export const CustomMaxLength = () => {
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="all"
-              id="r1"
+              id="r1-length"
               onClick={() => setFilterOption("all")}
             />
-            <Label htmlFor="r1">All</Label>
+            <Label htmlFor="r1-length">All</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="find-line"
-              id="r2"
+              id="r2-length"
               onClick={() => setFilterOption("find-first")}
             />
-            <Label htmlFor="r2">Find First</Label>
+            <Label htmlFor="r2-length">Find First</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="find-last"
-              id="r3"
+              id="r3-length"
               onClick={() => setFilterOption("find-last")}
             />
-            <Label htmlFor="r2">Find Last</Label>
+            <Label htmlFor="r3-length">Find Last</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="first-custom"
-              id="r4"
+              id="r4-length"
               onClick={() => setFilterOption("first-custom")}
             />
-            <Label htmlFor="r2">First Custom</Label>
+            <Label htmlFor="r4-length">First Custom</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="last-custom"
-              id="r5"
+              id="r5-length"
               onClick={() => setFilterOption("last-custom")}
             />
-            <Label htmlFor="r2">Last Custom</Label>
+            <Label htmlFor="r5-length">Last Custom</Label>
           </div>
         </RadioGroup>
       </InputGroup>
