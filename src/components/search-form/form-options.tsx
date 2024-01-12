@@ -7,6 +7,7 @@ import { CustomCalendarOption } from "@/components/search-form/radio-options/cus
 import { Label } from "@/components/ui/label";
 import { WarningMessage } from "@/components/search-form/messages/warning-message";
 import { CustomFilterOption } from "@/components/search-form/radio-options/custom-filter-option";
+import { CustomDatetimeOption } from "@/components/search-form/radio-options/custom-datetime-option";
 
 export const FormOptions = () => {
   return (
@@ -23,8 +24,8 @@ export const FormOptions = () => {
         <CustomMaxLength />
         <CustomCalendarOption />
         <div className={"flex flex-col gap-2"}>
-          <Label>Customize Time.</Label>
-          <WarningMessage />
+          <CustomDatetimeOption />
+          <SuccessMessage />
         </div>
       </div>
     </div>

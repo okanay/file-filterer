@@ -2,13 +2,15 @@ import { Button } from "@/components/ui/button";
 import { useAtomValue } from "jotai";
 import { useAtom, useSetAtom } from "jotai/index";
 import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
-import { parseDateToString } from "@/helpers/parse-date-toString";
+import { parseDateToString, parseLogDate } from "@/helpers/parse-date-toString";
 import { createFileName } from "@/helpers/create-file-name";
 import { formValidation } from "@/validations/form-validation";
 import {
   customLengthAtom,
   customNameAtom,
   dateOptionAtom,
+  dateTimeOptionAtom,
+  dateTimeValueAtom,
   dateValueAtom,
   downloadUrlAtom,
   fileAtom,
@@ -18,6 +20,8 @@ import {
   nameOptionAtom,
   statusAtom,
   TDateOption,
+  TDateTimeOption,
+  TDateTimeValue,
   TFilterOption,
   TLengthOption,
 } from "@/atoms/search-form-atoms";
@@ -39,6 +43,9 @@ export const FormSubmitButton = () => {
 
   const filterOption = useAtomValue(filterOptionAtom);
 
+  const dateTimeOption = useAtomValue(dateTimeOptionAtom);
+  const dateTimeValue = useAtomValue(dateTimeValueAtom);
+
   const setDownloadUrl = useSetAtom(downloadUrlAtom);
 
   const handleFormSubmit = async () => {
@@ -52,6 +59,8 @@ export const FormSubmitButton = () => {
       customLength,
       dateOption,
       customDate: customDate?.toDateString(),
+      dateTimeOption,
+      dateTimeValue,
     });
 
     // If Form Not Valid Return.
@@ -98,9 +107,15 @@ export const FormSubmitButton = () => {
       resultFile = FilterWithKeywords(
         fileToStringArray,
         keywords as string,
-        dateOption,
-        customDate as Date,
         filterOption
+      );
+
+      resultFile = FilterWithDate(resultFile, dateOption, customDate as Date);
+
+      resultFile = FilterWithDateTimeValue(
+        resultFile,
+        dateTimeValue,
+        dateTimeOption
       );
 
       resultFile = FilterWithCustomLength(
@@ -180,9 +195,29 @@ function FilterWithCustomLength(
 function FilterWithKeywords(
   fileToStringArray: string[],
   keywords: string,
-  dateOption: TDateOption,
-  customDate: Date,
   filterOption: TFilterOption
+) {
+  return fileToStringArray.filter((item) => {
+    if (filterOption === "match all") {
+      for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+        if (!item.includes(keyToCheck)) {
+          return false;
+        }
+      }
+    }
+
+    for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+      if (item.includes(keyToCheck)) {
+        return true;
+      }
+    }
+  });
+}
+
+function FilterWithDate(
+  fileToStringArray: string[],
+  dateOption: TDateOption,
+  customDate: Date
 ) {
   const customDateFormat = new Date(customDate!);
   const customDay = customDateFormat.getDate();
@@ -190,8 +225,8 @@ function FilterWithKeywords(
   const customYear = customDateFormat.getFullYear();
 
   return fileToStringArray.filter((item) => {
-    const checkDate = () => {
-      const lineDate = parseDateToString(item);
+    if (dateOption === "select") {
+      const lineDate = parseLogDate(item);
 
       if (lineDate) {
         const lineDay = lineDate.getDate();
@@ -204,24 +239,34 @@ function FilterWithKeywords(
           lineYear === customYear
         );
       } else return false;
-    };
-
-    if (filterOption === "match all") {
-      for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
-        if (!item.includes(keyToCheck)) {
-          return false;
-        }
-      }
     }
+    return true;
+  });
+}
 
-    for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
-      if (item.includes(keyToCheck)) {
-        if (dateOption === "select") {
-          return checkDate();
-        } else {
+function FilterWithDateTimeValue(
+  fileToStringArray: string[],
+  dateFilterValue: TDateTimeValue,
+  dateFilterOption: TDateTimeOption
+) {
+  const customFrom =
+    dateFilterValue.from.hour * 60 + dateFilterValue.from.minute;
+  const customTo = dateFilterValue.to.hour * 60 + dateFilterValue.to.minute;
+
+  return fileToStringArray.filter((item) => {
+    if (dateFilterOption === "custom") {
+      const lineDate = parseLogDate(item);
+
+      if (lineDate) {
+        const lineHour = lineDate.getHours();
+        const lineMin = lineDate.getMinutes();
+
+        const lineTime = lineHour * 60 + lineMin;
+
+        if (customFrom <= lineTime && customTo >= lineTime) {
           return true;
         }
       }
-    }
+    } else return true;
   });
 }

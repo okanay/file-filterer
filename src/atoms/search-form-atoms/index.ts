@@ -4,30 +4,54 @@ export type TStatus = {
   type: "initial" | "error" | "loading" | "success";
   message?: string;
 };
+export const statusAtom = atom<TStatus>({ type: "initial" });
+
+export const fileAtom = atom<File | undefined>(undefined);
+export const downloadUrlAtom = atom<undefined | string>(undefined);
+
+export const keywordAtom = atom<undefined | string>("");
+export const keywordsListAtom = atom<string[]>([]);
+
 export type TNameOption = "default" | "custom";
+export const nameOptionAtom = atom<TNameOption>("default");
+export const customNameAtom = atom<undefined | string>("");
+
 export type TLengthOption =
   | "all"
   | "find-first"
   | "find-last"
   | "first-custom"
   | "last-custom";
-export type TDateOption = "default" | "select";
-export type TFilterOption = "match one" | "match all";
-
-export const fileAtom = atom<File | undefined>(undefined);
-export const statusAtom = atom<TStatus>({ type: "initial" });
-export const downloadUrlAtom = atom<undefined | string>(undefined);
-
-export const keywordAtom = atom<undefined | string>("");
-export const keywordsListAtom = atom<string[]>([]);
-
-export const customNameAtom = atom<undefined | string>("");
-export const nameOptionAtom = atom<TNameOption>("default");
-
 export const lengthOptionAtom = atom<TLengthOption>("all");
 export const customLengthAtom = atom<undefined | number>(0);
 
+export type TDateOption = "default" | "select";
 export const dateOptionAtom = atom<TDateOption>("default");
 export const dateValueAtom = atom<Date | undefined>(undefined);
 
+export type TFilterOption = "match one" | "match all";
 export const filterOptionAtom = atom<TFilterOption>("match one");
+
+export type TDateTimeOption = "default" | "custom";
+export const dateTimeOptionAtom = atom<TDateTimeOption>("default");
+
+export type TDateTimeValue = {
+  from: {
+    hour: number;
+    minute: number;
+  };
+  to: {
+    hour: number;
+    minute: number;
+  };
+};
+export const dateTimeValueAtom = atom<TDateTimeValue>({
+  from: {
+    hour: 0,
+    minute: 0,
+  },
+  to: {
+    hour: 0,
+    minute: 0,
+  },
+});

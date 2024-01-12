@@ -2,16 +2,16 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
-import { dateOptionAtom } from "@/atoms/search-form-atoms";
+import { dateTimeOptionAtom } from "@/atoms/search-form-atoms";
 
-export const CustomCalendarOption = () => {
-  const [filterOption, setFilterOption] = useAtom(dateOptionAtom);
+export const CustomDatetimeOption = () => {
+  const [filterOption, setFilterOption] = useAtom(dateTimeOptionAtom);
 
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <Label>Customize Date.</Label>
-        <RadioGroup defaultValue={filterOption}>
+        <Label htmlFor="name-option">Customize Time.</Label>
+        <RadioGroup name={"match-one"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="default"
@@ -22,11 +22,11 @@ export const CustomCalendarOption = () => {
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="select"
+              value="custom"
               id="r2"
-              onClick={() => setFilterOption("select")}
+              onClick={() => setFilterOption("custom")}
             />
-            <Label htmlFor="r2">Select</Label>
+            <Label htmlFor="r2">Custom</Label>
           </div>
         </RadioGroup>
       </InputGroup>

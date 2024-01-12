@@ -4,20 +4,19 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
 import { nameOptionAtom } from "@/atoms/search-form-atoms";
 
-type TProps = React.FC<{}>;
-export const CustomNameOption: TProps = () => {
-  const [nameOption, setNameOption] = useAtom(nameOptionAtom);
+export const CustomNameOption = () => {
+  const [filterOption, setFilterOption] = useAtom(nameOptionAtom);
 
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
         <Label htmlFor="name-option">Customize File Name.</Label>
-        <RadioGroup name={"name-option"} defaultValue={nameOption}>
+        <RadioGroup name={"name-option"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="default"
               id="r1"
-              onClick={() => setNameOption("default")}
+              onClick={() => setFilterOption("default")}
             />
             <Label htmlFor="r1">Default</Label>
           </div>
@@ -25,7 +24,7 @@ export const CustomNameOption: TProps = () => {
             <RadioGroupItem
               value="custom"
               id="r2"
-              onClick={() => setNameOption("custom")}
+              onClick={() => setFilterOption("custom")}
             />
             <Label htmlFor="r2">Custom</Label>
           </div>
