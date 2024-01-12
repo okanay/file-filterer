@@ -9,10 +9,12 @@ export const CustomNameInput = () => {
   const setCustomName = useSetAtom(customNameAtom);
   const nameOption = useAtomValue(nameOptionAtom);
 
+  const showInput =
+    nameOption === "custom-with-file-name" || nameOption === "custom";
   return (
-    nameOption === "custom" && (
+    showInput && (
       <InputGroup>
-        <Label htmlFor="customName">Enter your file name.</Label>
+        <Label htmlFor="customName">Enter your custom file name.</Label>
         <Input
           type="text"
           id="customName"

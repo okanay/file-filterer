@@ -12,7 +12,11 @@ export const downloadUrlAtom = atom<undefined | string>(undefined);
 export const keywordAtom = atom<undefined | string>("");
 export const keywordsListAtom = atom<string[]>([]);
 
-export type TNameOption = "default" | "custom";
+export type TNameOption =
+  | "default"
+  | "custom"
+  | "file-name"
+  | "custom-with-file-name";
 export const nameOptionAtom = atom<TNameOption>("default");
 export const customNameAtom = atom<undefined | string>("");
 

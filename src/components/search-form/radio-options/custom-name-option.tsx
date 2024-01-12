@@ -22,11 +22,27 @@ export const CustomNameOption = () => {
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
+              value="file-name"
+              id="r3"
+              onClick={() => setFilterOption("file-name")}
+            />
+            <Label htmlFor="r2">File Name</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
               value="custom"
               id="r2"
               onClick={() => setFilterOption("custom")}
             />
             <Label htmlFor="r2">Custom</Label>
+          </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="custom-with-file-name"
+              id="r4"
+              onClick={() => setFilterOption("custom-with-file-name")}
+            />
+            <Label htmlFor="r2">Custom With File Name</Label>
           </div>
         </RadioGroup>
       </InputGroup>
