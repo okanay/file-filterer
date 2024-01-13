@@ -4,6 +4,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { useSetAtom } from "jotai/index";
 import { useAtomValue } from "jotai";
 import { customNameAtom, nameOptionAtom } from "@/atoms/search-form-atoms";
+import { Separator } from "@/components/ui/separator";
 
 export const NameInput = () => {
   const setCustomName = useSetAtom(customNameAtom);
@@ -14,15 +15,18 @@ export const NameInput = () => {
 
   return (
     showInput && (
-      <InputGroup>
-        <Label htmlFor="customName">Enter your custom file name.</Label>
-        <Input
-          type="text"
-          id="customName"
-          placeholder="my-file-name etc.."
-          onChange={(e) => setCustomName(e.target?.value)}
-        />
-      </InputGroup>
+      <>
+        <Separator />
+        <InputGroup>
+          <Label htmlFor="customName">Enter your custom file name.</Label>
+          <Input
+            type="text"
+            id="customName"
+            placeholder="my-file-name etc.."
+            onChange={(e) => setCustomName(e.target?.value)}
+          />
+        </InputGroup>
+      </>
     )
   );
 };

@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { useAtomValue, useAtom } from "jotai";
 // prettier-ignore
 import { dateValueAtom, dateOptionAtom, dateValuesAtom} from "@/atoms/search-form-atoms";
+import { Separator } from "@/components/ui/separator";
 
 export function CalendarInput() {
   const dateOption = useAtomValue(dateOptionAtom);
@@ -24,36 +25,43 @@ const TargetDateCalendarInput = () => {
   const [customDate, setDate] = useAtom(dateValueAtom);
 
   return (
-    <div className={"flex flex-col gap-2"}>
-      <Label>
-        Date{" "}
-        <span className={"text-amber-600 underline underline-offset-4"}>
-          Target
-        </span>
-      </Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "justify-start text-left font-normal",
-              !customDate && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {customDate ? format(customDate, "PPP") : <span>Pick a date</span>}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="single"
-            selected={customDate}
-            onSelect={setDate}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <>
+      <Separator />
+      <div className={"flex flex-col gap-2"}>
+        <Label>
+          Date{" "}
+          <span className={"text-amber-600 underline underline-offset-4"}>
+            Target
+          </span>
+        </Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "justify-start text-left font-normal",
+                !customDate && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {customDate ? (
+                format(customDate, "PPP")
+              ) : (
+                <span>Pick a date</span>
+              )}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="single"
+              selected={customDate}
+              onSelect={setDate}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+    </>
   );
 };
 
@@ -73,37 +81,40 @@ const BetweenDateCalendarInput = () => {
   };
 
   return (
-    <div className={"flex flex-col gap-2"}>
-      <Label>
-        Date{" "}
-        <span className={"text-amber-600 underline underline-offset-4"}>
-          Between
-        </span>
-      </Label>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button
-            variant={"outline"}
-            className={cn(
-              "justify-start text-left font-normal",
-              !customDates && "text-muted-foreground"
-            )}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {inputName()}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-auto p-0">
-          <Calendar
-            mode="range"
-            toDate={customDates?.to}
-            fromDate={customDates?.from}
-            selected={customDates}
-            onSelect={setDates as any}
-            initialFocus
-          />
-        </PopoverContent>
-      </Popover>
-    </div>
+    <>
+      <Separator />
+      <div className={"flex flex-col gap-2"}>
+        <Label>
+          Date{" "}
+          <span className={"text-amber-600 underline underline-offset-4"}>
+            Between
+          </span>
+        </Label>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button
+              variant={"outline"}
+              className={cn(
+                "justify-start text-left font-normal",
+                !customDates && "text-muted-foreground"
+              )}
+            >
+              <CalendarIcon className="mr-2 h-4 w-4" />
+              {inputName()}
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent className="w-auto p-0">
+            <Calendar
+              mode="range"
+              toDate={customDates?.to}
+              fromDate={customDates?.from}
+              selected={customDates}
+              onSelect={setDates as any}
+              initialFocus
+            />
+          </PopoverContent>
+        </Popover>
+      </div>
+    </>
   );
 };
