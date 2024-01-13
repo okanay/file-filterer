@@ -28,13 +28,13 @@ export const SpaceInput = () => {
         <div className={"flex w-[188px] items-center justify-between"}>
           <Label
             className={"max-w-[320px] text-end leading-4 tracking-wider"}
-            htmlFor="space-2"
+            htmlFor="space-2-input"
           >
             Space
           </Label>
           <Input
             type="number"
-            name="space-2"
+            id="space-2-input"
             min={1}
             placeholder="1"
             onChange={(e) => {
@@ -49,15 +49,14 @@ export const SpaceInput = () => {
         <div className={"flex w-[188px] items-center justify-between"}>
           <Label
             className={"max-w-[320px] text-end leading-4 tracking-wider"}
-            htmlFor="space-1-r"
+            htmlFor="space-1-input"
           >
             Line
           </Label>
           <Input
             min={1}
             type="number"
-            name="space-1-r"
-            id="space-1-r"
+            id="space-1-input"
             placeholder="1"
             onChange={(e) => {
               setSpaceValues((prev) => ({
