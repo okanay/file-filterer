@@ -8,6 +8,7 @@ import { FilterOption } from "@/components/search-form/radio-options/filter-opti
 import { DatetimeOption } from "@/components/search-form/radio-options/datetime-option";
 import { SpaceOption } from "@/components/search-form/radio-options/space-option";
 import { EarlyAccessMessage } from "@/components/search-form/messages/early-access-message";
+import { LineOption } from "@/components/search-form/radio-options/line-option";
 
 export const FormOptions = () => {
   return (
@@ -26,6 +27,10 @@ export const FormOptions = () => {
           <FilterOption />
           <div className={"flex flex-col gap-3"}>
             <SpaceOption />
+            <SuccessMessage />
+          </div>
+          <div className={"flex flex-col gap-3"}>
+            <LineOption />
             <SuccessMessage />
           </div>
         </div>

@@ -71,3 +71,6 @@ export const spaceValuesAtom = atom<TSpaceValues | undefined>({
   line: 1,
   space: 1,
 });
+
+export type TLineOption = "default" | "add-line";
+export const lineOptionAtom = atom<TLineOption>("default");

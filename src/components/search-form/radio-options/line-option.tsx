@@ -1,35 +1,35 @@
 import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { spaceOptionAtom } from "@/atoms/search-form-atoms";
+import { lineOptionAtom } from "@/atoms/search-form-atoms";
 import { useAtom } from "jotai/index";
 import { LabelWithIcon } from "@/components/ui/label-icon";
 
-export const SpaceOption = () => {
-  const [filterOption, setFilterOption] = useAtom(spaceOptionAtom);
+export const LineOption = () => {
+  const [filterOption, setFilterOption] = useAtom(lineOptionAtom);
 
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <LabelWithIcon name={"space"}>
-          <Label htmlFor="name-option">Output Space.</Label>
+        <LabelWithIcon name={"line"}>
+          <Label>Output Line Number.</Label>
         </LabelWithIcon>
-        <RadioGroup name={"match-one"} defaultValue={filterOption}>
+        <RadioGroup defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="default"
-              id="r1-space"
+              id="r1-line"
               onClick={() => setFilterOption("default")}
             />
-            <Label htmlFor="r1-space">Default</Label>
+            <Label htmlFor="r1-line">Default</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
-              value="add-space"
-              id="r2-space"
-              onClick={() => setFilterOption("add-space")}
+              value="add-line"
+              id="r2-line"
+              onClick={() => setFilterOption("add-line")}
             />
-            <Label htmlFor="r2-space">Add Space</Label>
+            <Label htmlFor="r2-space">Add Line Number</Label>
           </div>
         </RadioGroup>
       </InputGroup>

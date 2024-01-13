@@ -18,6 +18,7 @@ import {
   filterOptionAtom,
   keywordAtom,
   lengthOptionAtom,
+  lineOptionAtom,
   nameOptionAtom,
   spaceOptionAtom,
   spaceValuesAtom,
@@ -28,6 +29,7 @@ import {
   TDateValues,
   TFilterOption,
   TLengthOption,
+  TLineOption,
   TSpaceOption,
   TSpaceValues,
 } from "@/atoms/search-form-atoms";
@@ -56,6 +58,7 @@ export const FormSubmitButton = () => {
   const spaceValues = useAtomValue(spaceValuesAtom);
 
   const filterOption = useAtomValue(filterOptionAtom);
+  const lineOption = useAtomValue(lineOptionAtom);
 
   const handleFormSubmit = async () => {
     // Form Validation Here
@@ -127,7 +130,6 @@ export const FormSubmitButton = () => {
       );
 
       resultFile = FilterWithTime(resultFile, dateTimeValue, dateTimeOption);
-
       resultFile = FilterWithLength(resultFile, lengthOption, customLength!);
 
       if (resultFile.length === 0) {
@@ -137,6 +139,8 @@ export const FormSubmitButton = () => {
         });
         return;
       }
+
+      resultFile = LineOption(resultFile, lineOption);
 
       resultFile = SpaceOption(resultFile, spaceOption, spaceValues!);
 
@@ -353,4 +357,17 @@ function SpaceOption(
 
     return splittedArray.join(`${spaceCount()}`);
   }
+}
+
+function LineOption(
+  fileToStringArray: string[],
+  lineOption: TLineOption
+): string[] {
+  if (lineOption === "add-line") {
+    return fileToStringArray.map((item, index) =>
+      item.replace(item, `<${index}> : ${item}`)
+    );
+  }
+
+  return fileToStringArray;
 }

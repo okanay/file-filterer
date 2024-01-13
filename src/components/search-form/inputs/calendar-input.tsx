@@ -27,9 +27,9 @@ const TargetDateCalendarInput = () => {
   return (
     <>
       <Separator />
-      <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-col gap-4"}>
         <Label>
-          Date{" "}
+          Customize Date with{" "}
           <span className={"text-amber-600 underline underline-offset-4"}>
             Target
           </span>
@@ -83,9 +83,9 @@ const BetweenDateCalendarInput = () => {
   return (
     <>
       <Separator />
-      <div className={"flex flex-col gap-2"}>
+      <div className={"flex flex-col gap-4"}>
         <Label>
-          Date{" "}
+          Customize Date with{" "}
           <span className={"text-amber-600 underline underline-offset-4"}>
             Between
           </span>

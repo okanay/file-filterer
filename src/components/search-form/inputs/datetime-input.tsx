@@ -19,7 +19,13 @@ const DateTimeBetweenInputs = () => {
   const setDateTime = useSetAtom(dateTimeValueAtom);
 
   return (
-    <>
+    <div className={"flex flex-col gap-4"}>
+      <Label>
+        Customize Time with{" "}
+        <span className={"text-amber-600 underline underline-offset-4"}>
+          Between
+        </span>
+      </Label>
       <div className={"flex flex-col gap-4"}>
         <div className="flex w-full items-center justify-between gap-4">
           <div className={"flex w-[188px] items-center justify-between"}>
@@ -126,7 +132,7 @@ const DateTimeBetweenInputs = () => {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
@@ -134,7 +140,13 @@ const DateTimeTargetInputs = () => {
   const setDateTime = useSetAtom(dateTimeValueAtom);
 
   return (
-    <>
+    <div className={"flex flex-col gap-4"}>
+      <Label>
+        Customize Time with{" "}
+        <span className={"text-amber-600 underline underline-offset-4"}>
+          Target
+        </span>
+      </Label>
       <div className="flex w-full items-center justify-between gap-4">
         <div className={"flex w-[188px] items-center justify-between"}>
           <Label
@@ -187,6 +199,6 @@ const DateTimeTargetInputs = () => {
           />
         </div>
       </div>
-    </>
+    </div>
   );
 };
