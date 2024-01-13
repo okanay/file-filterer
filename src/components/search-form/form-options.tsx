@@ -9,26 +9,28 @@ import { DatetimeOption } from "@/components/search-form/radio-options/datetime-
 import { SpaceOption } from "@/components/search-form/radio-options/space-option";
 import { EarlyAccessMessage } from "@/components/search-form/messages/early-access-message";
 import { LineOption } from "@/components/search-form/radio-options/line-option";
+import { FormRequirement } from "@/components/search-form/form-requirement";
 
 export const FormOptions = () => {
   return (
-    <div className="mx-auto flex w-fit flex-col items-start gap-6 px-4 sm:px-0">
-      <h1 className="text-lg font-semibold tracking-wide text-gray-800 [@media(min-width:380px)]:translate-x-[-30%]">
+    <div className="flex flex-col items-start justify-start gap-y-4">
+      <h1 className="text-lg font-semibold tracking-wide text-gray-800">
         Options.
       </h1>
-      <div className="flex flex-wrap items-center justify-center gap-12 sm:flex-nowrap sm:items-start sm:justify-start">
+      <div className="flex flex-col items-start justify-start gap-8 sm:flex-row sm:items-start">
         <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
+          <FilterOption />
           <CalendarOption />
           <DatetimeOption />
-          <LengthOption />
-        </div>
-        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
-          <NameOption />
-          <FilterOption />
           <div className={"flex flex-col gap-3"}>
             <SpaceOption />
             <SuccessMessage />
           </div>
+        </div>
+        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8"></div>
+        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
+          <LengthOption />
+          <NameOption />
           <div className={"flex flex-col gap-3"}>
             <LineOption />
             <SuccessMessage />

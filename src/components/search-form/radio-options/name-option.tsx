@@ -12,7 +12,7 @@ export const NameOption = () => {
     <div className={"flex-shrink-0"}>
       <InputGroup>
         <LabelWithIcon name={"name"}>
-          <Label htmlFor="name-option">Customize File Name.</Label>
+          <Label htmlFor="name-option">Output File Name.</Label>
         </LabelWithIcon>
         <RadioGroup name={"name-option"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
