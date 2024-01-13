@@ -2,7 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { KeywordsList } from "@/components/search-form/keywords-list";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 import { keywordsSplitWithRegex, removeKeyword } from "@/helpers/keyword-regex";
 import { useAtom, useSetAtom } from "jotai/index";
 import { keywordAtom, keywordsListAtom } from "@/atoms/search-form-atoms";
@@ -11,7 +11,7 @@ export const KeywordInput = () => {
   const [keywords, setKeywords] = useAtom(keywordAtom);
   const setKeywordsList = useSetAtom(keywordsListAtom);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!keywords?.length) {
       setKeywordsList([]);
       return;
@@ -19,7 +19,7 @@ export const KeywordInput = () => {
 
     const timeout = setTimeout(() => {
       setKeywordsList([...keywordsSplitWithRegex(keywords)]);
-    }, 250);
+    }, 100);
 
     return () => {
       clearTimeout(timeout);
