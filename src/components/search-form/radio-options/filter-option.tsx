@@ -3,14 +3,17 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { filterOptionAtom } from "@/atoms/search-form-atoms";
 import { useAtom } from "jotai/index";
+import { LabelWithIcon } from "@/components/ui/label-icon";
 
-export const CustomFilterOption = () => {
+export const FilterOption = () => {
   const [filterOption, setFilterOption] = useAtom(filterOptionAtom);
 
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <Label htmlFor="name-option">Customize Filter Type.</Label>
+        <LabelWithIcon name={"filter"}>
+          <Label htmlFor="name-option">Customize Filter Type.</Label>
+        </LabelWithIcon>
         <RadioGroup name={"match-one"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
