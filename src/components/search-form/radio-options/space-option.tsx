@@ -21,7 +21,7 @@ export const SpaceOption = () => {
               id="r1-space"
               onClick={() => setFilterOption("default")}
             />
-            <Label htmlFor="r1-filter-type">Default</Label>
+            <Label htmlFor="r1-space">Default</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
@@ -29,7 +29,7 @@ export const SpaceOption = () => {
               id="r2-space"
               onClick={() => setFilterOption("add-space")}
             />
-            <Label htmlFor="r2-filter-type">Add Space</Label>
+            <Label htmlFor="r2-space">Add Space</Label>
           </div>
         </RadioGroup>
       </InputGroup>

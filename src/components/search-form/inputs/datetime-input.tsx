@@ -147,7 +147,7 @@ const DateTimeTargetInputs = () => {
             min={0}
             max={24}
             type="number"
-            id="hour-from"
+            id="target-5"
             placeholder="0"
             onChange={(e) => {
               setDateTime((prev) => ({
@@ -172,7 +172,7 @@ const DateTimeTargetInputs = () => {
             min={0}
             max={60}
             type="number"
-            id="minute-from"
+            id="target-6"
             placeholder="0"
             onChange={(e) => {
               setDateTime((prev) => ({
