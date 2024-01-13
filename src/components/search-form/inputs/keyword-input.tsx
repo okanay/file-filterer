@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { KeywordsList } from "@/components/search-form/keywords-list";
 import { useEffect } from "react";
-import { keywordsSplitWithRegex } from "@/helpers/keyword-regex";
+import { keywordsSplitWithRegex, removeKeyword } from "@/helpers/keyword-regex";
 import { useAtom, useSetAtom } from "jotai/index";
 import { keywordAtom, keywordsListAtom } from "@/atoms/search-form-atoms";
 
@@ -26,6 +26,10 @@ export const KeywordInput = () => {
     };
   }, [keywords, setKeywordsList]);
 
+  const handleRemoveKeyword = (key: string) => {
+    setKeywords(removeKeyword(key, keywords as string));
+  };
+
   return (
     <>
       <InputGroup>
@@ -33,11 +37,12 @@ export const KeywordInput = () => {
         <Input
           type="text"
           id="keywords"
+          value={keywords}
           placeholder="complete, true etc.."
           onChange={(e) => setKeywords(e.target?.value)}
         />
       </InputGroup>
-      <KeywordsList />
+      <KeywordsList removeHandle={handleRemoveKeyword} />
     </>
   );
 };
