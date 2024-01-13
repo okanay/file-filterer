@@ -24,9 +24,9 @@ export const CustomDatetimeOption = () => {
             <RadioGroupItem
               value="select"
               id="r2-date"
-              onClick={() => setFilterOption("select")}
+              onClick={() => setFilterOption("target")}
             />
-            <Label htmlFor="r2-date">Select Time</Label>
+            <Label htmlFor="r2-date">Target Time</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem

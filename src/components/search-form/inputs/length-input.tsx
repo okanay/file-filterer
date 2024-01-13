@@ -4,13 +4,13 @@ import { useAtomValue } from "jotai";
 import { useSetAtom } from "jotai/index";
 import { customLengthAtom, lengthOptionAtom } from "@/atoms/search-form-atoms";
 
-export const CustomLengthInput = () => {
+export const LengthInput = () => {
   const setLength = useSetAtom(customLengthAtom);
   const lengthOption = useAtomValue(lengthOptionAtom);
 
-  const isMatch =
-    lengthOption === "first-custom" || lengthOption === "last-custom" || false;
   const inputName = lengthOption === "first-custom" ? "first" : "last";
+  // prettier-ignore
+  const isMatch = lengthOption === "first-custom" || lengthOption === "last-custom" || false;
 
   return (
     isMatch && (

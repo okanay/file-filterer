@@ -5,12 +5,13 @@ import { useSetAtom } from "jotai/index";
 import { useAtomValue } from "jotai";
 import { customNameAtom, nameOptionAtom } from "@/atoms/search-form-atoms";
 
-export const CustomNameInput = () => {
+export const NameInput = () => {
   const setCustomName = useSetAtom(customNameAtom);
   const nameOption = useAtomValue(nameOptionAtom);
 
-  const showInput =
-    nameOption === "custom-with-file-name" || nameOption === "custom";
+  // prettier-ignore
+  const showInput = nameOption === "custom-with-file-name" || nameOption === "custom";
+
   return (
     showInput && (
       <InputGroup>

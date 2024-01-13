@@ -29,19 +29,6 @@ export type TLengthOption =
 export const lengthOptionAtom = atom<TLengthOption>("all");
 export const customLengthAtom = atom<undefined | number>(0);
 
-export type TDateOption = "default" | "between-one" | "between-two";
-export const dateOptionAtom = atom<TDateOption>("default");
-export const dateValueAtom = atom<Date | undefined>(undefined);
-
-export type TDateValues = { from: Date; to: Date };
-export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
-
-export type TFilterOption = "match one" | "match all";
-export const filterOptionAtom = atom<TFilterOption>("match one");
-
-export type TDateTimeOption = "default" | "select" | "between";
-export const dateTimeOptionAtom = atom<TDateTimeOption>("default");
-
 export type TDateTimeValue = {
   from: {
     hour: number;
@@ -62,3 +49,16 @@ export const dateTimeValueAtom = atom<TDateTimeValue>({
     minute: 0,
   },
 });
+
+export type TDateOption = "default" | "target" | "between";
+export const dateOptionAtom = atom<TDateOption>("default");
+export const dateValueAtom = atom<Date | undefined>(undefined);
+
+export type TDateTimeOption = "default" | "target" | "between";
+export const dateTimeOptionAtom = atom<TDateTimeOption>("default");
+
+export type TDateValues = { from: Date; to: Date };
+export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
+
+export type TFilterOption = "match one" | "match all";
+export const filterOptionAtom = atom<TFilterOption>("match one");

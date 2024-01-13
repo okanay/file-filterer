@@ -29,6 +29,7 @@ import {
 } from "@/atoms/search-form-atoms";
 
 export const FormSubmitButton = () => {
+  const setDownloadUrl = useSetAtom(downloadUrlAtom);
   const [status, setStatus] = useAtom(statusAtom);
 
   const file = useAtomValue(fileAtom);
@@ -44,12 +45,10 @@ export const FormSubmitButton = () => {
   const customDate = useAtomValue(dateValueAtom);
   const customDates = useAtomValue(dateValuesAtom);
 
-  const filterOption = useAtomValue(filterOptionAtom);
-
   const dateTimeOption = useAtomValue(dateTimeOptionAtom);
   const dateTimeValue = useAtomValue(dateTimeValueAtom);
 
-  const setDownloadUrl = useSetAtom(downloadUrlAtom);
+  const filterOption = useAtomValue(filterOptionAtom);
 
   const handleFormSubmit = async () => {
     // Form Validation Here
@@ -80,18 +79,15 @@ export const FormSubmitButton = () => {
       setStatus({ type: "loading" });
       setDownloadUrl(undefined);
 
-      // Create S3 Bucket PUT URL
+      // Create and Get S3 Bucket PUT URL
       const fileName = createFileName(file!.name, nameOption, customName!);
       const data = new FormData();
-
       data.set("file-name", fileName);
 
-      const res = await fetch("/api/s3-put-url-create", {
+      const awsPutUrlFetchResponseJSON = await fetch("/api/s3-put-url-create", {
         method: "POST",
         body: data,
-      });
-
-      const awsPutUrlFetchResponseJSON = await res.json();
+      }).then((res) => res.json());
 
       if (!awsPutUrlFetchResponseJSON.success) {
         setStatus({
@@ -121,19 +117,9 @@ export const FormSubmitButton = () => {
         customDates as TDateValues
       );
 
-      resultFile = FilterWithDateTimeValue(
-        resultFile,
-        dateTimeValue,
-        dateTimeOption
-      );
+      resultFile = FilterWithTime(resultFile, dateTimeValue, dateTimeOption);
 
-      resultFile = FilterWithCustomLength(
-        resultFile,
-        lengthOption,
-        customLength!
-      );
-
-      resultFile = resultFile.join("\n");
+      resultFile = FilterWithLength(resultFile, lengthOption, customLength!);
 
       if (resultFile.length === 0) {
         setStatus({
@@ -143,22 +129,22 @@ export const FormSubmitButton = () => {
         return;
       }
 
+      resultFile = resultFile.join("\n");
       const filteredFileBuffer = new Blob([resultFile], {
         type: "text/csv",
       });
 
+      // Send File to S3
       const signedUrl = awsPutUrlFetchResponseJSON.signedUrl;
-
       await fetch(signedUrl, {
         method: "PUT",
         body: filteredFileBuffer,
       });
 
+      // When Fetch is DONE! Set URL into the state.
       const url = `https://file-filter-local-bucket.s3.eu-central-1.amazonaws.com/${fileName}`;
       setDownloadUrl(url);
       setStatus({ type: "success" });
-      //
-      //
     } catch (e: any) {
       setStatus({
         type: "error",
@@ -178,7 +164,7 @@ export const FormSubmitButton = () => {
   );
 };
 
-function FilterWithCustomLength(
+function FilterWithLength(
   resultFile: string[],
   lengthOption: TLengthOption,
   customLength: number
@@ -207,18 +193,21 @@ function FilterWithKeywords(
   filterOption: TFilterOption
 ) {
   return fileToStringArray.filter((item) => {
-    if (filterOption === "match all") {
+    if (filterOption === "match one") {
       for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
-        if (!item.includes(keyToCheck)) {
-          return false;
+        if (item.includes(keyToCheck)) {
+          return true;
         }
       }
-    }
-
-    for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
-      if (item.includes(keyToCheck)) {
-        return true;
+    } else if (filterOption === "match all") {
+      let isMatchAll = true;
+      for (const keyToCheck of keywordsSplitWithRegex(keywords!)) {
+        if (!item.includes(keyToCheck)) {
+          return (isMatchAll = false);
+        }
       }
+
+      return isMatchAll;
     }
   });
 }
@@ -244,7 +233,8 @@ function FilterWithDate(
   const customYearTo = customDates?.to?.getFullYear();
 
   return fileToStringArray.filter((item) => {
-    if (dateOption === "between-one") {
+    // check only target date.
+    if (dateOption === "target") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -258,7 +248,9 @@ function FilterWithDate(
           lineYear === customYear
         );
       } else return false;
-    } else if (dateOption === "between-two") {
+    }
+    // check between two date.
+    else if (dateOption === "between") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -275,20 +267,24 @@ function FilterWithDate(
           customYearTo >= lineYear
         );
       } else return false;
-    } else return true;
+    }
+    // if date option is default just return true.
+    else return true;
   });
 }
 
-function FilterWithDateTimeValue(
+function FilterWithTime(
   fileToStringArray: string[],
   dateFilterValue: TDateTimeValue,
   dateFilterOption: TDateTimeOption
 ) {
-  const customFrom =
-    dateFilterValue.from.hour * 60 + dateFilterValue.from.minute;
+  // prettier-ignore
+  const customFrom = dateFilterValue.from.hour * 60 + dateFilterValue.from.minute;
   const customTo = dateFilterValue.to.hour * 60 + dateFilterValue.to.minute;
+
   return fileToStringArray.filter((item) => {
-    if (dateFilterOption === "select") {
+    // check only target time.
+    if (dateFilterOption === "target") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -301,7 +297,9 @@ function FilterWithDateTimeValue(
           return true;
         }
       }
-    } else if (dateFilterOption === "between") {
+    }
+    // check between two time.
+    else if (dateFilterOption === "between") {
       const lineDate = parseLogDate(item);
 
       if (lineDate) {
@@ -314,8 +312,8 @@ function FilterWithDateTimeValue(
           return true;
         }
       }
-    } else return true;
+    }
+    // if time option is default just return true.
+    else return true;
   });
-
-  return fileToStringArray;
 }

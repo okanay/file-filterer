@@ -24,15 +24,15 @@ export const CustomCalendarOption = () => {
             <RadioGroupItem
               value="between-one"
               id="r2-date-option"
-              onClick={() => setFilterOption("between-one")}
+              onClick={() => setFilterOption("target")}
             />
-            <Label htmlFor="r2-date-option">Select Date</Label>
+            <Label htmlFor="r2-date-option">Target Date</Label>
           </div>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
               value="between-two"
               id="r3-date-option"
-              onClick={() => setFilterOption("between-two")}
+              onClick={() => setFilterOption("between")}
             />
             <Label htmlFor="r3-date-option">Between Date</Label>
           </div>

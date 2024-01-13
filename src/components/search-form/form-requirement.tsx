@@ -2,13 +2,13 @@
 
 import { FileInput } from "@/components/search-form/inputs/file-input";
 import { KeywordInput } from "@/components/search-form/inputs/keyword-input";
-import { CustomNameInput } from "@/components/search-form/inputs/custom-name-input";
-import { CustomLengthInput } from "@/components/search-form/inputs/custom-length-input";
+import { NameInput } from "@/components/search-form/inputs/name-input";
+import { LengthInput } from "@/components/search-form/inputs/length-input";
 import { FormSubmitButton } from "@/components/search-form/form-submit-button";
 import { DownloadButton } from "@/components/search-form/download-button";
 import { StatusMessages } from "@/components/search-form/messages/status-message";
 import { CalendarInput } from "@/components/search-form/inputs/calendar-input";
-import { CustomDateTimeInput } from "@/components/search-form/inputs/custom-datetime-input";
+import { DatetimeInput } from "@/components/search-form/inputs/datetime-input";
 
 export const FormRequirement = () => {
   return (
@@ -21,10 +21,10 @@ export const FormRequirement = () => {
           <FileInput />
           <KeywordInput />
           <div />
-          <CustomNameInput />
-          <CustomLengthInput />
+          <NameInput />
+          <LengthInput />
           <CalendarInput />
-          <CustomDateTimeInput />
+          <DatetimeInput />
           <FormSubmitButton />
         </form>
         <DownloadButton />
