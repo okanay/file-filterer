@@ -19,6 +19,8 @@ import {
   keywordAtom,
   lengthOptionAtom,
   nameOptionAtom,
+  spaceOptionAtom,
+  spaceValuesAtom,
   statusAtom,
   TDateOption,
   TDateTimeOption,
@@ -26,6 +28,8 @@ import {
   TDateValues,
   TFilterOption,
   TLengthOption,
+  TSpaceOption,
+  TSpaceValues,
 } from "@/atoms/search-form-atoms";
 
 export const FormSubmitButton = () => {
@@ -48,6 +52,9 @@ export const FormSubmitButton = () => {
   const dateTimeOption = useAtomValue(dateTimeOptionAtom);
   const dateTimeValue = useAtomValue(dateTimeValueAtom);
 
+  const spaceOption = useAtomValue(spaceOptionAtom);
+  const spaceValues = useAtomValue(spaceValuesAtom);
+
   const filterOption = useAtomValue(filterOptionAtom);
 
   const handleFormSubmit = async () => {
@@ -64,6 +71,8 @@ export const FormSubmitButton = () => {
       customDates,
       dateTimeOption,
       dateTimeValue,
+      spaceOption,
+      spaceValues,
     });
 
     // If Form Not Valid Return.
@@ -129,7 +138,8 @@ export const FormSubmitButton = () => {
         return;
       }
 
-      resultFile = resultFile.join("\n");
+      resultFile = SpaceOption(resultFile, spaceOption, spaceValues!);
+
       const filteredFileBuffer = new Blob([resultFile], {
         type: "text/csv",
       });
@@ -316,4 +326,31 @@ function FilterWithTime(
     // if time option is default just return true.
     else return true;
   });
+}
+
+function SpaceOption(
+  fileToStringArray: string[],
+  spaceOption: TSpaceOption,
+  spaceValues: TSpaceValues
+): string {
+  if (spaceOption === "default") return fileToStringArray.join("\n");
+  else {
+    const { line, space } = spaceValues;
+
+    const splittedArray = [];
+    for (let i = 0; i < fileToStringArray.length; i += line) {
+      splittedArray.push(fileToStringArray.slice(i, i + line).join("\n"));
+    }
+
+    const spaceCount = () => {
+      let spaceValue = "";
+      for (let i = 1; i < space; i++) {
+        spaceValue += "\n";
+      }
+
+      return spaceValue;
+    };
+
+    return splittedArray.join(`${spaceCount()}`);
+  }
 }

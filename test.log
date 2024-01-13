@@ -1,4 +1,4 @@
-[20240107 15:24:05.367] T-1, I : [Icon] - (TrainJourneyIcon-Winter), SetActivate: True, autoUpdateAllIcons: True
+asd [20240107 15:24:05.367] T-1, I : [Icon] 1- (TrainJourneyIcon-Winter), SetActivate: True, autoUpdateAllIcons: True
 [20240107 15:24:05.368] T-1, I : [MainIconController] Request Activate icon - TrainJourneyIcon-winter(Clone), Data: Priority: Normal, IsMarkedAsActive : True
 [20240107 15:24:05.368] T-1, I : [SerialTaskRunner(-1734469004)] new task enqueued name: ManuelActionTask, queue count: 1
 [20240107 15:24:05.368] T-1, I : [SerialTaskRunner(-1734469004)] running next task. remaining tasks: 0

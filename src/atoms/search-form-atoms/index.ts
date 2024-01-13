@@ -62,3 +62,12 @@ export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
 
 export type TFilterOption = "match one" | "match all";
 export const filterOptionAtom = atom<TFilterOption>("match one");
+
+export type TSpaceOption = "default" | "add-space";
+export const spaceOptionAtom = atom<TSpaceOption>("default");
+
+export type TSpaceValues = { line: number; space: number };
+export const spaceValuesAtom = atom<TSpaceValues | undefined>({
+  line: 1,
+  space: 1,
+});

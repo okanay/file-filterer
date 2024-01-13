@@ -9,6 +9,7 @@ import { DownloadButton } from "@/components/search-form/download-button";
 import { StatusMessages } from "@/components/search-form/messages/status-message";
 import { CalendarInput } from "@/components/search-form/inputs/calendar-input";
 import { DatetimeInput } from "@/components/search-form/inputs/datetime-input";
+import { SpaceInput } from "@/components/search-form/inputs/space-input";
 
 export const FormRequirement = () => {
   return (
@@ -23,6 +24,7 @@ export const FormRequirement = () => {
           <div />
           <NameInput />
           <LengthInput />
+          <SpaceInput />
           <CalendarInput />
           <DatetimeInput />
           <FormSubmitButton />

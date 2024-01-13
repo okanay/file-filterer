@@ -73,6 +73,17 @@ const dateTimeBetweenSchema = z
     }
   });
 
+const spaceValuesSchema = z.object({
+  line: z
+    .number()
+    .min(1, { message: "Custom line limit should be a minimum of 1." })
+    .max(10, { message: "Custom line limit should not exceed 10." }),
+  space: z
+    .number()
+    .min(1, { message: "Custom space limit should be a minimum of 1." })
+    .max(10, { message: "Custom space limit should not exceed 10." }),
+});
+
 export const formValidation = z
   .object({
     file: fileSchema,
@@ -86,6 +97,8 @@ export const formValidation = z
     customDates: z.any(),
     dateTimeOption: z.string(),
     dateTimeValue: z.any(),
+    spaceOption: z.string(),
+    spaceValues: z.any(),
   })
   .superRefine((data, ctx) => {
     if (data.nameOption === "custom") {
@@ -155,6 +168,19 @@ export const formValidation = z
         ctx.addIssue({
           code: "custom",
           message: checkDateValues.error.errors.at(0)?.message,
+        });
+
+        return;
+      }
+    }
+
+    if (data.spaceOption === "add-space") {
+      const valuesValidation = spaceValuesSchema.safeParse(data.spaceValues);
+
+      if (!valuesValidation.success) {
+        ctx.addIssue({
+          code: "custom",
+          message: valuesValidation.error.errors.at(0)?.message,
         });
 
         return;

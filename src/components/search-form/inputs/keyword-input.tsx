@@ -2,7 +2,7 @@ import { InputGroup } from "@/components/search-form/input-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { KeywordsList } from "@/components/search-form/keywords-list";
-import { useEffect, useLayoutEffect } from "react";
+import { useLayoutEffect } from "react";
 import { keywordsSplitWithRegex, removeKeyword } from "@/helpers/keyword-regex";
 import { useAtom, useSetAtom } from "jotai/index";
 import { keywordAtom, keywordsListAtom } from "@/atoms/search-form-atoms";
