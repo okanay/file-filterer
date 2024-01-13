@@ -28,7 +28,7 @@ const TargetDateCalendarInput = () => {
       <Label>
         Date{" "}
         <span className={"text-amber-600 underline underline-offset-4"}>
-          Select
+          Target
         </span>
       </Label>
       <Popover>
@@ -63,9 +63,9 @@ const BetweenDateCalendarInput = () => {
     if (customDates?.from === undefined && customDates?.to === undefined) {
       return "Pick a date";
     } else if (customDates.from && customDates.to === undefined) {
-      return `${format(customDates?.from, "PPP")} with ...`;
+      return `${format(customDates?.from, "PPP")} between ...`;
     } else {
-      return `${format(customDates?.from, "PPP")} with ${format(
+      return `${format(customDates?.from, "PPP")} ~ ${format(
         customDates?.to,
         "PPP"
       )}`;
