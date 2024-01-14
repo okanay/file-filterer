@@ -1,9 +1,10 @@
 import { InputGroup } from "@/components/search-form/input-group";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
 import { dateTimeOptionAtom } from "@/atoms/search-form-atoms";
-import { LabelWithIcon } from "@/components/ui/label-icon";
+import { OptionHeaderIcon } from "@/components/ui/option-header-icon";
+import { OptionHeader } from "@/components/ui/option-header";
+import { Label } from "@/components/ui/label";
 
 export const DatetimeOption = () => {
   const [filterOption, setFilterOption] = useAtom(dateTimeOptionAtom);
@@ -11,9 +12,9 @@ export const DatetimeOption = () => {
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <LabelWithIcon name={"time"}>
-          <Label htmlFor="name-option">Customize Time.</Label>
-        </LabelWithIcon>
+        <OptionHeaderIcon name={"time"}>
+          <OptionHeader>Customize Time.</OptionHeader>
+        </OptionHeaderIcon>
         <RadioGroup name={"match-one"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem

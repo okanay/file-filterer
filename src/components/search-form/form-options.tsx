@@ -22,19 +22,13 @@ export const FormOptions = () => {
           <FilterOption />
           <CalendarOption />
           <DatetimeOption />
-          <div className={"flex flex-col gap-3"}>
-            <SpaceOption />
-            <SuccessMessage />
-          </div>
+          <SpaceOption />
         </div>
         <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8"></div>
         <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
           <LengthOption />
           <NameOption />
-          <div className={"flex flex-col gap-3"}>
-            <LineOption />
-            <SuccessMessage />
-          </div>
+          <LineOption />
         </div>
       </div>
     </div>

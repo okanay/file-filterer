@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 type TProps = React.FC<{ name: string; children: React.ReactNode }>;
-export const LabelWithIcon: TProps = ({ name, children }) => {
+export const OptionHeaderIcon: TProps = ({ name, children }) => {
   return (
     <div className={"relative flex shrink-0 items-center gap-2"}>
       <Image

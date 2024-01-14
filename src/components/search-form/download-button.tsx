@@ -1,5 +1,5 @@
-import { useAtomValue } from "jotai";
 import { downloadUrlAtom, statusAtom } from "@/atoms/search-form-atoms";
+import { useAtomValue } from "jotai";
 import { Button } from "@/components/ui/button";
 
 export const DownloadButton = () => {
@@ -10,7 +10,9 @@ export const DownloadButton = () => {
     <Button
       asChild={true}
       className={`${
-        status.type !== "success" && "cursor-no-drop bg-zinc-700 opacity-75"
+        status.type === "success"
+          ? "border border-zinc-950 bg-white text-zinc-950"
+          : "cursor-no-drop border border-gray-950/10 bg-gray-400 text-zinc-600 opacity-75"
       }`}
     >
       <a href={downloadUrl} target="_blank">

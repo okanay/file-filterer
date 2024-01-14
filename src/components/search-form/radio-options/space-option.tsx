@@ -3,7 +3,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { spaceOptionAtom } from "@/atoms/search-form-atoms";
 import { useAtom } from "jotai/index";
-import { LabelWithIcon } from "@/components/ui/label-icon";
+import { OptionHeaderIcon } from "@/components/ui/option-header-icon";
+import { OptionHeader } from "@/components/ui/option-header";
 
 export const SpaceOption = () => {
   const [filterOption, setFilterOption] = useAtom(spaceOptionAtom);
@@ -11,9 +12,9 @@ export const SpaceOption = () => {
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <LabelWithIcon name={"space"}>
-          <Label htmlFor="name-option">Output Space.</Label>
-        </LabelWithIcon>
+        <OptionHeaderIcon name={"space"}>
+          <OptionHeader>Output Space.</OptionHeader>
+        </OptionHeaderIcon>
         <RadioGroup name={"match-one"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem

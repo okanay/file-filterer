@@ -3,7 +3,8 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useAtom } from "jotai/index";
 import { lengthOptionAtom } from "@/atoms/search-form-atoms";
-import { LabelWithIcon } from "@/components/ui/label-icon";
+import { OptionHeaderIcon } from "@/components/ui/option-header-icon";
+import { OptionHeader } from "@/components/ui/option-header";
 
 export const LengthOption = () => {
   const [filterOption, setFilterOption] = useAtom(lengthOptionAtom);
@@ -11,9 +12,9 @@ export const LengthOption = () => {
   return (
     <div className={"flex-shrink-0"}>
       <InputGroup>
-        <LabelWithIcon name={"length"}>
-          <Label htmlFor="custom-length">Output Log Length.</Label>
-        </LabelWithIcon>
+        <OptionHeaderIcon name={"length"}>
+          <OptionHeader>Output Log Length.</OptionHeader>
+        </OptionHeaderIcon>
         <RadioGroup name={"custom-length"} defaultValue={filterOption}>
           <div className="flex items-center space-x-2">
             <RadioGroupItem
