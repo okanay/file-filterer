@@ -17,15 +17,14 @@ export const FormOptions = () => {
       <h1 className="text-lg font-semibold tracking-wide text-gray-800">
         Options.
       </h1>
-      <div className="flex flex-col items-start justify-start gap-8 sm:flex-row sm:items-start">
-        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
+      <div className="flex flex-col items-start justify-start gap-16 sm:flex-row sm:items-start">
+        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-6">
           <FilterOption />
           <CalendarOption />
           <DatetimeOption />
           <SpaceOption />
         </div>
-        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8"></div>
-        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-8">
+        <div className="flex w-fit flex-col flex-wrap items-start justify-start gap-6">
           <LengthOption />
           <NameOption />
           <LineOption />
