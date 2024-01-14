@@ -34,7 +34,7 @@ export const KeywordInput = () => {
   return (
     <>
       <InputGroup>
-        <Label htmlFor="keywords">Enter your filter sentences.</Label>
+        <Label htmlFor="keywords">Enter your filter keywords.</Label>
         <Input
           type="text"
           id="keywords"
