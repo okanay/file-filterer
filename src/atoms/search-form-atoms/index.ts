@@ -60,7 +60,7 @@ export const dateTimeOptionAtom = atom<TDateTimeOption>("default");
 export type TDateValues = { from: Date; to: Date };
 export const dateValuesAtom = atom<TDateValues | undefined>(undefined);
 
-export type TFilterOption = "match one" | "match all";
+export type TFilterOption = "match one" | "match all" | "none";
 export const filterOptionAtom = atom<TFilterOption>("match one");
 
 export type TSpaceOption = "default" | "add-space";

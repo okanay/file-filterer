@@ -84,10 +84,14 @@ const spaceValuesSchema = z.object({
     .max(10, { message: "Custom space limit should not exceed 10." }),
 });
 
+const keywordsSchema = z
+  .string()
+  .min(3, { message: "Please add some keywords." });
+
 export const formValidation = z
   .object({
     file: fileSchema,
-    keywords: z.string().min(1, { message: "Please add some keywords." }),
+    keywords: z.any(),
     nameOption: z.string(),
     customName: z.string(),
     lengthOption: z.string(),
@@ -95,6 +99,7 @@ export const formValidation = z
     dateOption: z.string(),
     customDate: z.any(),
     customDates: z.any(),
+    filterOption: z.string(),
     dateTimeOption: z.string(),
     dateTimeValue: z.any(),
     spaceOption: z.string(),
@@ -109,20 +114,18 @@ export const formValidation = z
         });
       }
     }
-
-    if (
-      data.lengthOption === "first-custom" ||
-      data.lengthOption === "last-custom"
-    ) {
-      if (data.customLength <= 0) {
+    //
+    else if (data.filterOption !== "none") {
+      const checkKeywords = keywordsSchema.safeParse(new Date(data.keywords));
+      if (!checkKeywords.success) {
         ctx.addIssue({
           code: "custom",
-          message: "Please set your custom line length.",
+          message: "Please add some keywords.",
         });
       }
     }
-
-    if (data.dateOption === "between-one") {
+    //
+    else if (data.dateOption === "between-one") {
       const checkDate = dateSchema.safeParse(new Date(data.customDate));
       if (!checkDate.success) {
         ctx.addIssue({
@@ -131,7 +134,8 @@ export const formValidation = z
         });
       }
     }
-    if (data.dateOption === "between-two") {
+    //
+    else if (data.dateOption === "between-two") {
       const checkDatesFrom = dateSchema.safeParse(
         new Date(data.customDates?.from)
       );
@@ -144,7 +148,8 @@ export const formValidation = z
         });
       }
     }
-    if (data.dateTimeOption === "between") {
+    //
+    else if (data.dateTimeOption === "between") {
       const checkDateValues = dateTimeBetweenSchema.safeParse(
         data.dateTimeValue
       );
@@ -158,8 +163,8 @@ export const formValidation = z
         return;
       }
     }
-
-    if (data.dateTimeOption === "select") {
+    //
+    else if (data.dateTimeOption === "select") {
       const checkDateValues = dateTimeSelectSchema.safeParse(
         data.dateTimeValue
       );
@@ -173,8 +178,8 @@ export const formValidation = z
         return;
       }
     }
-
-    if (data.spaceOption === "add-space") {
+    //
+    else if (data.spaceOption === "add-space") {
       const valuesValidation = spaceValuesSchema.safeParse(data.spaceValues);
 
       if (!valuesValidation.success) {
@@ -184,6 +189,18 @@ export const formValidation = z
         });
 
         return;
+      }
+    }
+    //
+    else if (
+      data.lengthOption === "first-custom" ||
+      data.lengthOption === "last-custom"
+    ) {
+      if (data.customLength <= 0) {
+        ctx.addIssue({
+          code: "custom",
+          message: "Please set your custom line length.",
+        });
       }
     }
   });

@@ -72,6 +72,7 @@ export const FormSubmitButton = () => {
       dateOption,
       customDate,
       customDates,
+      filterOption,
       dateTimeOption,
       dateTimeValue,
       spaceOption,
@@ -80,6 +81,7 @@ export const FormSubmitButton = () => {
 
     // If Form Not Valid Return.
     if (!validation.success) {
+      console.log(validation);
       setStatus({
         type: "error",
         message: validation.error.errors.at(0)?.message,
@@ -222,7 +224,7 @@ function FilterWithKeywords(
       }
 
       return isMatchAll;
-    }
+    } else return true;
   });
 }
 

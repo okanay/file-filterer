@@ -32,6 +32,14 @@ export const FilterOption = () => {
             />
             <Label htmlFor="r2-filter-type">Match All Keywords</Label>
           </div>
+          <div className="flex items-center space-x-2">
+            <RadioGroupItem
+              value="none"
+              id="r3-filter-type"
+              onClick={() => setFilterOption("none")}
+            />
+            <Label htmlFor="r3-filter-type">Match None</Label>
+          </div>
         </RadioGroup>
       </InputGroup>
     </div>

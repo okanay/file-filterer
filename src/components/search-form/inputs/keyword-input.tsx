@@ -5,12 +5,18 @@ import { KeywordsList } from "@/components/search-form/keywords-list";
 import { useLayoutEffect } from "react";
 import { keywordsSplitWithRegex, removeKeyword } from "@/helpers/keyword-regex";
 import { useAtom, useSetAtom } from "jotai/index";
-import { keywordAtom, keywordsListAtom } from "@/atoms/search-form-atoms";
+import {
+  filterOptionAtom,
+  keywordAtom,
+  keywordsListAtom,
+} from "@/atoms/search-form-atoms";
 import { Separator } from "@/components/ui/separator";
+import { useAtomValue } from "jotai";
 
 export const KeywordInput = () => {
   const [keywords, setKeywords] = useAtom(keywordAtom);
   const setKeywordsList = useSetAtom(keywordsListAtom);
+  const filterOption = useAtomValue(filterOptionAtom);
 
   useLayoutEffect(() => {
     if (!keywords?.length) {
@@ -30,6 +36,8 @@ export const KeywordInput = () => {
   const handleRemoveKeyword = (key: string) => {
     setKeywords(removeKeyword(key, keywords as string));
   };
+
+  if (filterOption === "none") return;
 
   return (
     <>
