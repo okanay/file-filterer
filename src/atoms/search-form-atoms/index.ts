@@ -5,7 +5,6 @@ export type TStatus = {
   message?: string;
 };
 export const statusAtom = atom<TStatus>({ type: "initial" });
-
 export const fileAtom = atom<File | undefined>(undefined);
 export const downloadUrlAtom = atom<undefined | string>(undefined);
 
@@ -25,7 +24,8 @@ export type TLengthOption =
   | "find-first"
   | "find-last"
   | "first-custom"
-  | "last-custom";
+  | "last-custom"
+  | "hello-git";
 export const lengthOptionAtom = atom<TLengthOption>("all");
 export const customLengthAtom = atom<undefined | number>(0);
 
