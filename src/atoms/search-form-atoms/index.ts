@@ -24,8 +24,7 @@ export type TLengthOption =
   | "find-first"
   | "find-last"
   | "first-custom"
-  | "last-custom"
-  | "hello-git";
+  | "last-custom";
 export const lengthOptionAtom = atom<TLengthOption>("all");
 export const customLengthAtom = atom<undefined | number>(0);
 
